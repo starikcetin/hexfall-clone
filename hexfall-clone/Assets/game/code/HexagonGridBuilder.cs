@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace starikcetin.hexfallClone
@@ -7,6 +8,15 @@ namespace starikcetin.hexfallClone
     {
         [SerializeField] private int _columnCount, _rowCount;
         [SerializeField] private float _size;
+
+        /// <summary>
+        /// Dim0 = col
+        /// Dim1 = row
+        /// [col, row] => hexagon
+        /// </summary>
+        private GameObject[,] _hexagonGrid;
+
+        private List<HexagonGroup> _hexagonGroups;
 
         private float HexWidth => _size * 2;
         private float HexHeight => _size * Mathf.Sqrt(3);
@@ -23,11 +33,39 @@ namespace starikcetin.hexfallClone
 
         private void Start()
         {
-            BuildHexagonGrid(_size);
+            _hexagonGrid = BuildHexagonGrid(_size);
+            _hexagonGroups = AssembleHexagonGroups().ToList();
         }
 
-        private void BuildHexagonGrid(float size)
+        private IEnumerable<HexagonGroup> AssembleHexagonGroups()
         {
+            // 2-left
+            for (int col = 0; col < _hexagonGrid.GetLength(0) - 1; col++)
+            for (int row = 0; row < _hexagonGrid.GetLength(1) - 1; row++)
+            {
+                var alpha = new OffsetCoordinates(col, row);
+                var bravo = new OffsetCoordinates(col, row + 1);
+                var charlie = new OffsetCoordinates(col + 1, row + 1);
+
+                yield return new HexagonGroup(alpha, bravo, charlie);
+            }
+
+            // 2-right
+            for (int col = 0; col < _hexagonGrid.GetLength(0) - 1; col++)
+            for (int row = 0; row < _hexagonGrid.GetLength(1) - 1; row++)
+            {
+                var alpha = new OffsetCoordinates(col, row);
+                var bravo = new OffsetCoordinates(col + 1, row + 1);
+                var charlie = new OffsetCoordinates(col + 1, row);
+
+                yield return new HexagonGroup(alpha, bravo, charlie);
+            }
+        }
+
+        private GameObject[,] BuildHexagonGrid(float size)
+        {
+            GameObject[,] grid = new GameObject[_columnCount, _rowCount];
+
             var centerOffset = CalculateCenterOffset(size, _columnCount, _rowCount);
 
             for (var col = 0; col < _columnCount; col++)
@@ -38,8 +76,12 @@ namespace starikcetin.hexfallClone
 
                     var newHexagon = Instantiate(PrefabDatabase.Instance.Hexagon, transform);
                     newHexagon.transform.position = offsetCoordinates.ToUnity(size) - centerOffset;
+
+                    grid[col, row] = newHexagon;
                 }
             }
+
+            return grid;
         }
 
         private Vector2 CalculateCenterOffset(float size, int colCount, int rowCount)
