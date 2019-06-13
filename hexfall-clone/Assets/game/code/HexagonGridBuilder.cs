@@ -73,15 +73,19 @@ namespace starikcetin.hexfallClone
                 for (var row = 0; row < _rowCount; row++)
                 {
                     var offsetCoordinates = new OffsetCoordinates(col, row);
-
-                    var newHexagon = Instantiate(PrefabDatabase.Instance.Hexagon, transform);
-                    newHexagon.transform.position = offsetCoordinates.ToUnity(size) - centerOffset;
-
-                    grid[col, row] = newHexagon;
+                    grid[col, row] = CreateHexagon(size, offsetCoordinates, centerOffset);
                 }
             }
 
             return grid;
+        }
+
+        private GameObject CreateHexagon(float size, OffsetCoordinates offsetCoordinates, Vector2 centerOffset)
+        {
+            var newHexagon = Instantiate(PrefabDatabase.Instance.Hexagon, transform);
+            newHexagon.transform.position = offsetCoordinates.ToUnity(size) - centerOffset;
+            newHexagon.GetComponentInChildren<Renderer>().material.color = ColourDatabase.Instance.RandomColour();
+            return newHexagon;
         }
 
         private Vector2 CalculateCenterOffset(float size, int colCount, int rowCount)
