@@ -12,13 +12,6 @@ namespace starikcetin.hexfallClone
         [SerializeField] private int _columnCount, _rowCount;
         [SerializeField] private float _size;
 
-        /// <summary>
-        /// Dim0 = col
-        /// Dim1 = row
-        /// [col, row] => hexagon
-        /// </summary>
-        private GameObject[,] _hexagonGrid;
-
         private float HexWidth => _size * 2;
         private float HexHeight => _size * Mathf.Sqrt(3);
 
@@ -47,7 +40,7 @@ namespace starikcetin.hexfallClone
         {
             //yield return null;
 
-            _hexagonGrid = BuildHexagonGrid(_size);
+            HexagonDatabase.Instance.HexagonGrid = BuildHexagonGrid(_size);
 
             foreach (var hexagonGroup in AssembleHexagonGroups())
             {
@@ -62,8 +55,8 @@ namespace starikcetin.hexfallClone
         {
             // 2-right even (a)
 
-            for (int col = 0; col < _hexagonGrid.GetLength(0) - 1; col+=2)
-            for (int row = 0; row < _hexagonGrid.GetLength(1) - 1; row++)
+            for (int col = 0; col < _columnCount - 1; col+=2)
+            for (int row = 0; row < _rowCount - 1; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
                 var bravo = new OffsetCoordinates(col + 1, row + 1);
@@ -82,8 +75,8 @@ namespace starikcetin.hexfallClone
 
             // 2-left even (b)
 
-            for (int col = 0; col < _hexagonGrid.GetLength(0) - 1; col+=2)
-            for (int row = 0; row < _hexagonGrid.GetLength(1) - 1; row++)
+            for (int col = 0; col < _columnCount - 1; col+=2)
+            for (int row = 0; row < _rowCount - 1; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
                 var bravo = new OffsetCoordinates(col, row + 1);
@@ -102,8 +95,8 @@ namespace starikcetin.hexfallClone
 
             // 2-right odd (c)
 
-            for (int col = 1; col < _hexagonGrid.GetLength(0) - 1; col+=2)
-            for (int row = 1; row < _hexagonGrid.GetLength(1); row++)
+            for (int col = 1; col < _columnCount - 1; col+=2)
+            for (int row = 1; row < _rowCount; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
                 var bravo = new OffsetCoordinates(col + 1, row);
@@ -122,8 +115,8 @@ namespace starikcetin.hexfallClone
 
             // 2-left odd (d)
 
-            for (int col = 1; col < _hexagonGrid.GetLength(0) - 1; col+=2)
-            for (int row = 0; row < _hexagonGrid.GetLength(1) - 1; row++)
+            for (int col = 1; col < _columnCount - 1; col+=2)
+            for (int row = 0; row < _rowCount - 1; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
                 var bravo = new OffsetCoordinates(col, row + 1);
