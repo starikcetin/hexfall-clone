@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace starikcetin.hexfallClone
@@ -29,35 +32,112 @@ namespace starikcetin.hexfallClone
         /// </summary>
         private float HexVerticalDistance => HexHeight;
 
+        private void Awake()
+        {
+            // Write Game Params
+            GameParamsDatabase.Instance.Size = _size;
+        }
+
         private void Start()
         {
+            StartCoroutine(AfterStart());
+        }
+
+        IEnumerator AfterStart()
+        {
+            //yield return null;
+
             _hexagonGrid = BuildHexagonGrid(_size);
 
-            AssembleHexagonGroups().ToList().ForEach(HexagonGroupDatabase.Instance.RegisterHexagonGroup);
+            foreach (var hexagonGroup in AssembleHexagonGroups())
+            {
+                HexagonGroupDatabase.Instance.RegisterHexagonGroup(hexagonGroup);
+                //yield return null;
+            }
+
+            yield return 0;
         }
 
         private IEnumerable<HexagonGroup> AssembleHexagonGroups()
         {
-            // 2-left
-            for (int col = 0; col < _hexagonGrid.GetLength(0) - 1; col++)
-            for (int row = 0; row < _hexagonGrid.GetLength(1) - 1; row++)
-            {
-                var alpha = new OffsetCoordinates(col, row);
-                var bravo = new OffsetCoordinates(col, row + 1);
-                var charlie = new OffsetCoordinates(col + 1, row + 1);
+            // 2-right even (a)
 
-                yield return new HexagonGroup(alpha, bravo, charlie);
-            }
-
-            // 2-right
-            for (int col = 0; col < _hexagonGrid.GetLength(0) - 1; col++)
+            for (int col = 0; col < _hexagonGrid.GetLength(0) - 1; col+=2)
             for (int row = 0; row < _hexagonGrid.GetLength(1) - 1; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
                 var bravo = new OffsetCoordinates(col + 1, row + 1);
                 var charlie = new OffsetCoordinates(col + 1, row);
 
+//                var ha = Utils._Debug_Highlight(alpha.ToUnity(_size), Color.white);
+//                var hb = Utils._Debug_Highlight(bravo.ToUnity(_size), Color.white);
+//                var hc = Utils._Debug_Highlight(charlie.ToUnity(_size), Color.white);
+
                 yield return new HexagonGroup(alpha, bravo, charlie);
+
+//                Destroy(ha);
+//                Destroy(hb);
+//                Destroy(hc);
+            }
+
+            // 2-left even (b)
+
+            for (int col = 0; col < _hexagonGrid.GetLength(0) - 1; col+=2)
+            for (int row = 0; row < _hexagonGrid.GetLength(1) - 1; row++)
+            {
+                var alpha = new OffsetCoordinates(col, row);
+                var bravo = new OffsetCoordinates(col, row + 1);
+                var charlie = new OffsetCoordinates(col + 1, row + 1);
+
+//                var ha = Utils._Debug_Highlight(alpha.ToUnity(_size), Color.white);
+//                var hb = Utils._Debug_Highlight(bravo.ToUnity(_size), Color.white);
+//                var hc = Utils._Debug_Highlight(charlie.ToUnity(_size), Color.white);
+
+                yield return new HexagonGroup(alpha, bravo, charlie);
+
+//                Destroy(ha);
+//                Destroy(hb);
+//                Destroy(hc);
+            }
+
+            // 2-right odd (c)
+
+            for (int col = 1; col < _hexagonGrid.GetLength(0) - 1; col+=2)
+            for (int row = 1; row < _hexagonGrid.GetLength(1); row++)
+            {
+                var alpha = new OffsetCoordinates(col, row);
+                var bravo = new OffsetCoordinates(col + 1, row);
+                var charlie = new OffsetCoordinates(col + 1, row - 1);
+
+//                var ha = Utils._Debug_Highlight(alpha.ToUnity(_size), Color.black);
+//                var hb = Utils._Debug_Highlight(bravo.ToUnity(_size), Color.black);
+//                var hc = Utils._Debug_Highlight(charlie.ToUnity(_size), Color.black);
+
+                yield return new HexagonGroup(alpha, bravo, charlie);
+
+//                Destroy(ha);
+//                Destroy(hb);
+//                Destroy(hc);
+            }
+
+            // 2-left odd (d)
+
+            for (int col = 1; col < _hexagonGrid.GetLength(0) - 1; col+=2)
+            for (int row = 0; row < _hexagonGrid.GetLength(1) - 1; row++)
+            {
+                var alpha = new OffsetCoordinates(col, row);
+                var bravo = new OffsetCoordinates(col, row + 1);
+                var charlie = new OffsetCoordinates(col + 1, row);
+
+//                var ha = Utils._Debug_Highlight(alpha.ToUnity(_size), Color.black);
+//                var hb = Utils._Debug_Highlight(bravo.ToUnity(_size), Color.black);
+//                var hc = Utils._Debug_Highlight(charlie.ToUnity(_size), Color.black);
+
+                yield return new HexagonGroup(alpha, bravo, charlie);
+
+//                Destroy(ha);
+//                Destroy(hb);
+//                Destroy(hc);
             }
         }
 
@@ -65,14 +145,16 @@ namespace starikcetin.hexfallClone
         {
             GameObject[,] grid = new GameObject[_columnCount, _rowCount];
 
-            var centerOffset = CalculateCenterOffset(size, _columnCount, _rowCount);
+            var centerOffset = Vector2.zero; //CalculateCenterOffset(size, _columnCount, _rowCount);
 
             for (var col = 0; col < _columnCount; col++)
             {
                 for (var row = 0; row < _rowCount; row++)
                 {
                     var offsetCoordinates = new OffsetCoordinates(col, row);
-                    grid[col, row] = CreateHexagon(size, offsetCoordinates, centerOffset);
+                    var hex = CreateHexagon(size, offsetCoordinates, centerOffset);
+                    hex.name = $"({col}, {row})";
+                    grid[col, row] = hex;
                 }
             }
 

@@ -11,12 +11,23 @@ public class HexagonGroupDatabase : Singleton<HexagonGroupDatabase>
     public void RegisterHexagonGroup(HexagonGroup group)
     {
         _hexagonGroups.Add(group);
+
+        var highlighter = Utils._Debug_Highlight(group.Center, Color.black);
+        highlighter.name = "debug_group_highlighter";
     }
 
-    public HexagonGroup FindClosestGroup(Vector3 point, float size)
+    public HexagonGroup FindClosestGroup(Vector2 point, float size)
     {
-        return _hexagonGroups.MinBy(
-            g => Vector3.SqrMagnitude(point - g.GetCenter(size))
-        ).First();
+        float Selector(HexagonGroup group)
+        {
+            var groupCenter = group.Center;
+            float distance = Vector3.SqrMagnitude(point - groupCenter);
+            return distance;
+        }
+
+        IExtremaEnumerable<HexagonGroup> mins = _hexagonGroups.MinBy(Selector);
+        var closestGroup = mins.First();
+        return closestGroup;
     }
+
 }

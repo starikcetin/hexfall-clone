@@ -20,9 +20,13 @@ namespace starikcetin.hexfallClone
             Charlie = charlie;
         }
 
-        public Vector3 GetCenter(float size)
+        public Vector2 Center
         {
-            return (Alpha.ToUnity(size) + Bravo.ToUnity(size) + Charlie.ToUnity(size)) / 3f;
+            get
+            {
+                var size = GameParamsDatabase.Instance.Size;
+                return (Alpha.ToUnity(size) + Bravo.ToUnity(size) + Charlie.ToUnity(size)) / 3f;
+            }
         }
     }
 }
