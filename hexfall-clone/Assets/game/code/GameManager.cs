@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Lean.Transition;
 using starikcetin.hexfallClone;
 using UnityEngine;
 
@@ -22,7 +23,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"{nameof(GameManager)}: {nameof(InputManagerOnTapped)}({nameof(worldPosition)}: {worldPosition})");
 
-        var closestGroup = HexagonGroupDatabase.Instance.FindClosestGroup(worldPosition, GameParamsDatabase.Instance.Size);
+        var closestGroup =
+            HexagonGroupDatabase.Instance.FindClosestGroup(worldPosition, GameParamsDatabase.Instance.Size);
         Debug.Log("Center of closest group: " + closestGroup.Center);
 
         SelectGroup(closestGroup);
@@ -35,7 +37,8 @@ public class GameManager : MonoBehaviour
         _isSelectionActive = true;
 
         Destroy(_highlightGameObject);
-        _highlightGameObject = Utils._Debug_Highlight((Vector3)_selectedGroup.Center - new Vector3(0,0,1), Color.green);
+        _highlightGameObject =
+            Utils._Debug_Highlight((Vector3) _selectedGroup.Center - new Vector3(0, 0, 1), Color.green);
     }
 
     private void InputManagerOnSwiped(SwipeDirection swipeDirection)
@@ -48,54 +51,95 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (swipeDirection == SwipeDirection.Right)
+        switch (swipeDirection)
         {
-            RotateClockwise(_selectedGroup);
-        }
-        else
-        {
-            RotateCounterClockwise(_selectedGroup);
+            case SwipeDirection.Right:
+                StartCoroutine(RotateSequence(RotationDirection.Clockwise));
+                break;
+
+            case SwipeDirection.Left:
+                StartCoroutine(RotateSequence(RotationDirection.CounterClockwise));
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(swipeDirection), swipeDirection, null);
         }
     }
 
-    private void RotateClockwise(HexagonGroup selectedGroup)
+    private IEnumerator RotateSequence(RotationDirection direction)
     {
-        var alphaHex = HexagonDatabase.Instance[selectedGroup.Alpha];
-        var bravoHex = HexagonDatabase.Instance[selectedGroup.Bravo];
-        var charlieHex = HexagonDatabase.Instance[selectedGroup.Charlie];
+        for (int i = 0; i < 3; i++)
+        {
+            bool calledBack = false;
+            var callback = new Action(() => calledBack = true);
+
+            switch (direction)
+            {
+                // rotate
+                case RotationDirection.Clockwise:
+                    RotateOnce_Clockwise(callback);
+                    break;
+
+                case RotationDirection.CounterClockwise:
+                    RotateOnce_CounterClockwise(callback);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
+
+            // wait
+            while (!calledBack)
+            {
+                yield return null;
+            }
+
+            // check for matches
+            // TODO
+        }
+    }
+
+    private void RotateOnce_Clockwise(Action callback)
+    {
+        var alphaHex = HexagonDatabase.Instance[_selectedGroup.Alpha];
+        var bravoHex = HexagonDatabase.Instance[_selectedGroup.Bravo];
+        var charlieHex = HexagonDatabase.Instance[_selectedGroup.Charlie];
 
         // Alpha Hex --> Bravo
-        Put(alphaHex, selectedGroup.Bravo);
+        Put(alphaHex, _selectedGroup.Bravo, callback);
 
         // Bravo Hex --> Charlie
-        Put(bravoHex, selectedGroup.Charlie);
+        Put(bravoHex, _selectedGroup.Charlie, null);
 
         // Charlie Hex --> Alpha
-        Put(charlieHex, selectedGroup.Alpha);
+        Put(charlieHex, _selectedGroup.Alpha, null);
     }
 
-    private void RotateCounterClockwise(HexagonGroup selectedGroup)
+    private void RotateOnce_CounterClockwise(Action callback)
     {
-        var alphaHex = HexagonDatabase.Instance[selectedGroup.Alpha];
-        var bravoHex = HexagonDatabase.Instance[selectedGroup.Bravo];
-        var charlieHex = HexagonDatabase.Instance[selectedGroup.Charlie];
+        var alphaHex = HexagonDatabase.Instance[_selectedGroup.Alpha];
+        var bravoHex = HexagonDatabase.Instance[_selectedGroup.Bravo];
+        var charlieHex = HexagonDatabase.Instance[_selectedGroup.Charlie];
 
         // Alpha Hex --> Charlie
-        Put(alphaHex, selectedGroup.Charlie);
+        Put(alphaHex, _selectedGroup.Charlie, callback);
 
         // Charlie Hex --> Bravo
-        Put(charlieHex, selectedGroup.Bravo);
+        Put(charlieHex, _selectedGroup.Bravo, null);
 
         // Bravo Hex --> Alpha
-        Put(bravoHex, selectedGroup.Alpha);
+        Put(bravoHex, _selectedGroup.Alpha, null);
     }
 
-    private void Put(GameObject hex, OffsetCoordinates coords)
+    private void Put(GameObject hex, OffsetCoordinates coords, Action callback)
     {
         // set in hexagon database
         HexagonDatabase.Instance[coords] = hex;
 
         // sync the position of the GameObject TODO: we might move this to a Hexagon class.
-        hex.transform.position = coords.ToUnity(GameParamsDatabase.Instance.Size);
+        //hex.transform.position = coords.ToUnity(GameParamsDatabase.Instance.Size);
+        hex.transform.positionTransition(coords.ToUnity(GameParamsDatabase.Instance.Size), 0.25f)
+            .JoinTransition()
+            .EventTransition(callback, 0.1f);
     }
 }
