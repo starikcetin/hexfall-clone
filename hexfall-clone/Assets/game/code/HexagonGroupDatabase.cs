@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using MoreLinq;
 using starikcetin.hexfallClone;
 using UnityEngine;
 
@@ -12,9 +12,11 @@ public class HexagonGroupDatabase : Singleton<HexagonGroupDatabase>
     {
         _hexagonGroups.Add(group);
     }
-//
-//    public void FindClosestGroup(Vector3 point, float size)
-//    {
-//        _hexagonGroups.MinBy(g => Vector3.SqrMagnitude(point - g.GetCenter(size)));
-//    }
+
+    public HexagonGroup FindClosestGroup(Vector3 point, float size)
+    {
+        return _hexagonGroups.MinBy(
+            g => Vector3.SqrMagnitude(point - g.GetCenter(size))
+        ).First();
+    }
 }

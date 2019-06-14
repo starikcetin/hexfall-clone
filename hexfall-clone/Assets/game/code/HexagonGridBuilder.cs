@@ -16,8 +16,6 @@ namespace starikcetin.hexfallClone
         /// </summary>
         private GameObject[,] _hexagonGrid;
 
-        private List<HexagonGroup> _hexagonGroups;
-
         private float HexWidth => _size * 2;
         private float HexHeight => _size * Mathf.Sqrt(3);
 
@@ -34,7 +32,8 @@ namespace starikcetin.hexfallClone
         private void Start()
         {
             _hexagonGrid = BuildHexagonGrid(_size);
-            _hexagonGroups = AssembleHexagonGroups().ToList();
+
+            AssembleHexagonGroups().ToList().ForEach(HexagonGroupDatabase.Instance.RegisterHexagonGroup);
         }
 
         private IEnumerable<HexagonGroup> AssembleHexagonGroups()

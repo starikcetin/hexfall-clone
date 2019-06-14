@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace starikcetin.hexfallClone
 {
     /// <summary>
@@ -16,6 +18,11 @@ namespace starikcetin.hexfallClone
             Alpha = alpha;
             Bravo = bravo;
             Charlie = charlie;
+        }
+
+        public Vector3 GetCenter(float size)
+        {
+            return (Alpha.ToUnity(size) + Bravo.ToUnity(size) + Charlie.ToUnity(size)) / 3f;
         }
     }
 }
