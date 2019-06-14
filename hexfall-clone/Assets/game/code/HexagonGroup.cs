@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace starikcetin.hexfallClone
 {
     /// <summary>
@@ -16,6 +18,15 @@ namespace starikcetin.hexfallClone
             Alpha = alpha;
             Bravo = bravo;
             Charlie = charlie;
+        }
+
+        public Vector2 Center
+        {
+            get
+            {
+                var size = GameParamsDatabase.Instance.Size;
+                return (Alpha.ToUnity(size) + Bravo.ToUnity(size) + Charlie.ToUnity(size)) / 3f;
+            }
         }
     }
 }

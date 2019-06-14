@@ -39,7 +39,7 @@ namespace starikcetin.hexfallClone
             */
 
             var x = Col;
-            var z = Row - (Col - (Col & 1)) / 2;
+            var z = Row - (Col + (Col & 1)) / 2;
             var y = -x - z;
             return new CubeCoordinates(x, y, z);
         }
