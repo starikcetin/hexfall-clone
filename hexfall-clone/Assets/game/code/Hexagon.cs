@@ -23,5 +23,12 @@ namespace starikcetin.hexfallClone
                 .JoinTransition()
                 .EventTransition(() => Destroy(gameObject), 0f);
         }
+
+        public void MoveAndCallback(Vector3 target, float time, Action callback)
+        {
+            transform.positionTransition(target, time)
+                .JoinTransition()
+                .EventTransition(callback, 0f);
+        }
     }
 }

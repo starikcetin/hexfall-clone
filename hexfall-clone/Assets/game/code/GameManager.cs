@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     private HexagonGroup _selectedGroup;
     private GameObject _highlightGameObject;
 
+    private readonly Queue<HexagonGroup> _matches = new Queue<HexagonGroup>();
+
     private void Start()
     {
         var inputManager = GetComponentInChildren<InputManager>();
@@ -145,12 +147,49 @@ public class GameManager : MonoBehaviour
 
         // sync the position of the GameObject TODO: we might move this to a Hexagon class.
         //hex.transform.position = coords.ToUnity(GameParamsDatabase.Instance.Size);
-        hex.transform.positionTransition(coords.ToUnity(GameParamsDatabase.Instance.Size), 0.25f)
-            .JoinTransition()
-            .EventTransition(callback, 0.1f);
+        hex.GetComponent<Hexagon>().MoveAndCallback(coords.ToUnity(GameParamsDatabase.Instance.Size), 0.25f, callback);
     }
 
     private bool CheckAndHandleMatches()
+    {
+        bool matchFound = RecordAllMatches();
+
+        if (matchFound)
+        {
+            HandleAllMatches();
+            RequestShift();
+        }
+
+        return matchFound;
+    }
+
+    private void HandleAllMatches()
+    {
+        HashSet<OffsetCoordinates> hexagonsToExplode = GetHexagonsToExplode();
+
+        foreach (var hexagon in hexagonsToExplode)
+        {
+            Explode(hexagon);
+        }
+    }
+
+    private HashSet<OffsetCoordinates> GetHexagonsToExplode()
+    {
+        HashSet<OffsetCoordinates> hexagonsToExplode = new HashSet<OffsetCoordinates>();
+
+        while (_matches.Count != 0)
+        {
+            var group = _matches.Dequeue();
+
+            hexagonsToExplode.Add(group.Alpha);
+            hexagonsToExplode.Add(group.Bravo);
+            hexagonsToExplode.Add(group.Charlie);
+        }
+
+        return hexagonsToExplode;
+    }
+
+    private bool RecordAllMatches()
     {
         bool matchFound = false;
 
@@ -160,12 +199,22 @@ public class GameManager : MonoBehaviour
 
             if (isMatch)
             {
-                HandleMatch(group);
                 matchFound = true;
+                RecordMatch(group);
             }
         }
 
         return matchFound;
+    }
+
+    private void RecordMatch(HexagonGroup group)
+    {
+        _matches.Enqueue(group);
+    }
+
+    private void RequestShift()
+    {
+        GetComponent<GridShifter>().ShiftAll(() => CheckAndHandleMatches());
     }
 
     private bool CheckForMatch(HexagonGroup group)
@@ -199,7 +248,8 @@ public class GameManager : MonoBehaviour
     private void Explode(OffsetCoordinates coords)
     {
         var hex = HexagonDatabase.Instance[coords];
+        HexagonDatabase.Instance.MarkAsDestroyed(coords);
         hex.GetComponent<Hexagon>().ExplodeSelf();
-        //HexagonDatabase.Instance.MarkAsDestroyed(coords);
+
     }
 }

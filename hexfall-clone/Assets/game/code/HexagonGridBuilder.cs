@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace starikcetin.hexfallClone
 {
-    public class HexagonGridBuilder : MonoBehaviour
+    public class HexagonGridBuilder : Singleton<HexagonGridBuilder>
     {
         [SerializeField] private int _columnCount, _rowCount;
         [SerializeField] private float _size;
@@ -25,10 +25,11 @@ namespace starikcetin.hexfallClone
         /// </summary>
         private float HexVerticalDistance => HexHeight;
 
-        private void Awake()
+        protected override void _Awake()
         {
             // Write Game Params
             GameParamsDatabase.Instance.Size = _size;
+            GameParamsDatabase.Instance.CenterOffset = Vector2.zero; //CalculateCenterOffset(size, _columnCount, _rowCount);
         }
 
         private void Start()
@@ -138,14 +139,12 @@ namespace starikcetin.hexfallClone
         {
             GameObject[,] grid = new GameObject[_columnCount, _rowCount];
 
-            var centerOffset = Vector2.zero; //CalculateCenterOffset(size, _columnCount, _rowCount);
-
             for (var col = 0; col < _columnCount; col++)
             {
                 for (var row = 0; row < _rowCount; row++)
                 {
                     var offsetCoordinates = new OffsetCoordinates(col, row);
-                    var hex = CreateHexagon(size, offsetCoordinates, centerOffset);
+                    var hex = CreateHexagon(size, offsetCoordinates);
                     hex.name = $"({col}, {row})";
                     grid[col, row] = hex;
                 }
@@ -154,10 +153,13 @@ namespace starikcetin.hexfallClone
             return grid;
         }
 
-        private GameObject CreateHexagon(float size, OffsetCoordinates offsetCoordinates, Vector2 centerOffset)
+        /// <summary>
+        /// DOES NOT REGISTER THE NEW HEXAGON WITH <see cref="HexagonDatabase"/>. MAKE IT YOURSELF.
+        /// </summary>
+        public GameObject CreateHexagon(float size, OffsetCoordinates offsetCoordinates)
         {
             var newHexagon = Instantiate(PrefabDatabase.Instance.Hexagon, transform);
-            newHexagon.transform.position = offsetCoordinates.ToUnity(size) - centerOffset;
+            newHexagon.transform.position = offsetCoordinates.ToUnity(size) - GameParamsDatabase.Instance.CenterOffset;
             var colour = ColourDatabase.Instance.RandomColour();
             newHexagon.GetComponent<Hexagon>().SetColor(colour);
             return newHexagon;
