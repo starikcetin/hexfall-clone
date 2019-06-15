@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
     private void Explode(OffsetCoordinates coords)
     {
         var hex = HexagonDatabase.Instance[coords];
-        Destroy(hex);
+        hex.GetComponent<Hexagon>().ExplodeSelf();
         //HexagonDatabase.Instance.MarkAsDestroyed(coords);
     }
 }
