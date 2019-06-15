@@ -95,7 +95,13 @@ public class GameManager : MonoBehaviour
             }
 
             // check for matches
-            // TODO
+            var matchFound = CheckAndHandleMatches();
+
+            if (matchFound)
+            {
+                Debug.Log($"{nameof(GameManager)}.{nameof(RotateSequence)}: match found! breaking the rotation sequence.");
+                yield break;
+            }
         }
     }
 
@@ -141,5 +147,46 @@ public class GameManager : MonoBehaviour
         hex.transform.positionTransition(coords.ToUnity(GameParamsDatabase.Instance.Size), 0.25f)
             .JoinTransition()
             .EventTransition(callback, 0.1f);
+    }
+
+    private bool CheckAndHandleMatches()
+    {
+        bool matchFound = false;
+
+        foreach (var group in HexagonGroupDatabase.Instance.HexagonGroups)
+        {
+            var isMatch = CheckForMatch(group);
+
+            if (isMatch)
+            {
+                HandleMatch(group);
+                matchFound = true;
+            }
+        }
+
+        return matchFound;
+    }
+
+    private bool CheckForMatch(HexagonGroup group)
+    {
+        var (alpha, bravo, charlie) = HexagonDatabase.Instance[group];
+        return IsSameColor(
+            alpha.GetComponent<Hexagon>(),
+            bravo.GetComponent<Hexagon>(),
+            charlie.GetComponent<Hexagon>());
+    }
+
+    private bool IsSameColor(Hexagon a, Hexagon b, Hexagon c)
+    {
+        var ac = a.Color;
+        var bc = b.Color;
+        var cc = c.Color;
+
+        return ac == bc && bc == cc && ac == cc;
+    }
+
+    private void HandleMatch(HexagonGroup group)
+    {
+        // TODO 
     }
 }

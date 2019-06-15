@@ -158,7 +158,8 @@ namespace starikcetin.hexfallClone
         {
             var newHexagon = Instantiate(PrefabDatabase.Instance.Hexagon, transform);
             newHexagon.transform.position = offsetCoordinates.ToUnity(size) - centerOffset;
-            newHexagon.GetComponentInChildren<Renderer>().material.color = ColourDatabase.Instance.RandomColour();
+            var colour = ColourDatabase.Instance.RandomColour();
+            newHexagon.GetComponent<Hexagon>().SetColor(colour);
             return newHexagon;
         }
 
