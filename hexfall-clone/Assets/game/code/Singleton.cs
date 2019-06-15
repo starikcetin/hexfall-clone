@@ -15,13 +15,19 @@ public class Singleton<T> : MonoBehaviour
         _Awake();
     }
 
+    /// <summary>
+    /// Do not override this in children. Override _OnDestroy() instead.
+    /// </summary>
     private void OnDestroy()
     {
         if (Instance == this)
         {
             Instance = null;
         }
+
+        _OnDestroy();
     }
+
 
     private void EnsureSingleton()
     {
@@ -40,6 +46,13 @@ public class Singleton<T> : MonoBehaviour
     /// Override this in implementors instead of Awake().
     /// </summary>
     protected virtual void _Awake()
+    {
+    }
+
+    /// <summary>
+    /// Override this in implementors instead of OnDestroy().
+    /// </summary>
+    protected virtual void _OnDestroy()
     {
     }
 

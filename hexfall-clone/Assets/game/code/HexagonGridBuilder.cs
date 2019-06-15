@@ -144,7 +144,7 @@ namespace starikcetin.hexfallClone
                 for (var row = 0; row < _rowCount; row++)
                 {
                     var offsetCoordinates = new OffsetCoordinates(col, row);
-                    var hex = CreateHexagon(size, offsetCoordinates);
+                    var hex = CreateHexagon(size, offsetCoordinates, false);
                     hex.name = $"({col}, {row})";
                     grid[col, row] = hex;
                 }
@@ -156,9 +156,11 @@ namespace starikcetin.hexfallClone
         /// <summary>
         /// DOES NOT REGISTER THE NEW HEXAGON WITH <see cref="HexagonDatabase"/>. MAKE IT YOURSELF.
         /// </summary>
-        public GameObject CreateHexagon(float size, OffsetCoordinates offsetCoordinates)
+        public GameObject CreateHexagon(float size, OffsetCoordinates offsetCoordinates, bool isBomb)
         {
-            var newHexagon = Instantiate(PrefabDatabase.Instance.Hexagon, transform);
+            var prefab = isBomb ? PrefabDatabase.Instance.BombHexagon : PrefabDatabase.Instance.Hexagon;
+
+            var newHexagon = Instantiate(prefab, transform);
             newHexagon.transform.position = offsetCoordinates.ToUnity(size) - GameParamsDatabase.Instance.CenterOffset;
             var colour = ColourDatabase.Instance.RandomColour();
             newHexagon.GetComponent<Hexagon>().SetColor(colour);

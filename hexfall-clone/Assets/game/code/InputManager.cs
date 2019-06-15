@@ -21,6 +21,13 @@ public class InputManager : MonoBehaviour
         _tapDetector.OnTap.AddListener(OnTap);
     }
 
+    private void OnDestroy()
+    {
+        _rightSwipeDetector.OnSwipe.RemoveListener(OnRightSwipe);
+        _leftSwipeDetector.OnSwipe.RemoveListener(OnLeftSwipe);
+        _tapDetector.OnTap.RemoveListener(OnTap);
+    }
+
     private void OnRightSwipe(LeanFinger finger)
     {
         Debug.Log(nameof(InputManager) + " right swipe");

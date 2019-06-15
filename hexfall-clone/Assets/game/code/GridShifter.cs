@@ -4,6 +4,23 @@ using UnityEngine;
 
 public class GridShifter : MonoBehaviour
 {
+    private bool _shouldSpawnBomb;
+
+    private void Start()
+    {
+        ScoreDatabase.Instance.BombScoreReached += OnBombScoreReached;
+    }
+
+    private void OnDestroy()
+    {
+        ScoreDatabase.Instance.BombScoreReached -= OnBombScoreReached;
+    }
+
+    private void OnBombScoreReached()
+    {
+        _shouldSpawnBomb = true;
+    }
+
     public void ShiftAll(Action callback)
     {
         var callbackAggregator = new CallbackAggregator(callback);
@@ -36,20 +53,26 @@ public class GridShifter : MonoBehaviour
             var rowLength = HexagonDatabase.Instance.HexagonGrid.GetLength(1);
             var refillSpawnRow = rowLength + 2;
 
-            // TODO : refill. The amount is exactly <shiftCount>.
+            // refill. The amount is exactly <shiftCount>.
             for (var i = rowLength - shiftCount; i < rowLength; i++)
             {
                 var fillTarget = new OffsetCoordinates(col, i);
 
                 var hex = HexagonGridBuilder.Instance.CreateHexagon(GameParamsDatabase.Instance.Size,
-                    new OffsetCoordinates(col, refillSpawnRow));
+                    new OffsetCoordinates(col, refillSpawnRow), _shouldSpawnBomb);
+
+                if (_shouldSpawnBomb)
+                {
+                    _shouldSpawnBomb = false;
+                }
 
                 // data shift can be instant, nothing will/should interfere
                 HexagonDatabase.Instance[fillTarget] = hex;
 
                 callbackAggregator.JobStarted();
                 hex.GetComponent<Hexagon>()
-                    .MoveAndCallback(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f, callbackAggregator.JobFinished);
+                    .MoveAndCallback(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f,
+                        callbackAggregator.JobFinished);
             }
         }
 

@@ -5,20 +5,30 @@ using Lean.Transition;
 using starikcetin.hexfallClone;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
+    public event Action ActionDone;
+
     private bool _isSelectionActive = false;
 
     private HexagonGroup _selectedGroup;
     private GameObject _highlightGameObject;
 
     private readonly Queue<HexagonGroup> _matches = new Queue<HexagonGroup>();
+    private InputManager _inputManager;
 
     private void Start()
     {
-        var inputManager = GetComponentInChildren<InputManager>();
-        inputManager.Swiped += InputManagerOnSwiped;
-        inputManager.Tapped += InputManagerOnTapped;
+        _inputManager = GetComponentInChildren<InputManager>();
+
+        _inputManager.Swiped += InputManagerOnSwiped;
+        _inputManager.Tapped += InputManagerOnTapped;
+    }
+
+    protected override void _OnDestroy()
+    {
+        _inputManager.Swiped -= InputManagerOnSwiped;
+        _inputManager.Tapped -= InputManagerOnTapped;
     }
 
     private void InputManagerOnTapped(Vector3 worldPosition)
@@ -66,6 +76,8 @@ public class GameManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(swipeDirection), swipeDirection, null);
         }
+
+        ActionDone?.Invoke();
     }
 
     private IEnumerator RotateSequence(RotationDirection direction)
@@ -235,21 +247,12 @@ public class GameManager : MonoBehaviour
         return ac == bc && bc == cc && ac == cc;
     }
 
-    private void HandleMatch(HexagonGroup group)
-    {
-        // explode the objects
-        Explode(group.Alpha);
-        Explode(group.Bravo);
-        Explode(group.Charlie);
-
-        // TODO: points
-    }
-
     private void Explode(OffsetCoordinates coords)
     {
         var hex = HexagonDatabase.Instance[coords];
         HexagonDatabase.Instance.MarkAsDestroyed(coords);
         hex.GetComponent<Hexagon>().ExplodeSelf();
 
+        ScoreDatabase.Instance.OnHexagonExploded();
     }
 }
