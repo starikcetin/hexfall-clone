@@ -153,8 +153,12 @@ public class GameManager : MonoBehaviour
     private bool CheckAndHandleMatches()
     {
         bool matchFound = RecordAllMatches();
-        HandleAllMatches();
-        RequestShift();
+
+        if (matchFound)
+        {
+            HandleAllMatches();
+            RequestShift();
+        }
 
         return matchFound;
     }
@@ -211,7 +215,7 @@ public class GameManager : MonoBehaviour
     private void RequestShift()
     {
         // TODO : wait for callback?
-        GetComponent<GridShifter>().ShiftAll(null);
+        GetComponent<GridShifter>().ShiftAll(() => CheckAndHandleMatches());
     }
 
     private bool CheckForMatch(HexagonGroup group)
