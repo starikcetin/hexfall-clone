@@ -2,7 +2,7 @@
 using Lean.Touch;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour
+public class InputManager : Singleton<InputManager>
 {
     public event Action<SwipeDirection> Swiped;
 
