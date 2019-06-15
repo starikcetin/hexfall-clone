@@ -99,7 +99,8 @@ public class GameManager : MonoBehaviour
 
             if (matchFound)
             {
-                Debug.Log($"{nameof(GameManager)}.{nameof(RotateSequence)}: match found! breaking the rotation sequence.");
+                Debug.Log(
+                    $"{nameof(GameManager)}.{nameof(RotateSequence)}: match found! breaking the rotation sequence.");
                 yield break;
             }
         }
@@ -187,6 +188,18 @@ public class GameManager : MonoBehaviour
 
     private void HandleMatch(HexagonGroup group)
     {
-        // TODO 
+        // explode the objects
+        Explode(group.Alpha);
+        Explode(group.Bravo);
+        Explode(group.Charlie);
+
+        // TODO: points
+    }
+
+    private void Explode(OffsetCoordinates coords)
+    {
+        var hex = HexagonDatabase.Instance[coords];
+        Destroy(hex);
+        //HexagonDatabase.Instance.MarkAsDestroyed(coords);
     }
 }
