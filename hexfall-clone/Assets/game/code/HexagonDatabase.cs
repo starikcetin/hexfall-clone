@@ -23,10 +23,10 @@ public class HexagonDatabase : Singleton<HexagonDatabase>
         this[group.Charlie]
     );
 
-//    public void MarkAsDestroyed(OffsetCoordinates coords)
-//    {
-//        this[coords] = null;
-//    }
+    public void MarkAsDestroyed(OffsetCoordinates coords)
+    {
+        this[coords] = null;
+    }
 
     /// <summary>
     /// Swaps the [col, rowA] with [col, rowB].
