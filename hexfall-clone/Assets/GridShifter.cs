@@ -6,6 +6,8 @@ public class GridShifter : MonoBehaviour
 {
     public void ShiftAll(Action callback)
     {
+        var callbackAggregator = new CallbackAggregator(callback);
+
         for (int col = 0; col < HexagonDatabase.Instance.HexagonGrid.GetLength(0); col++)
         {
             // count empty cells
@@ -25,7 +27,8 @@ public class GridShifter : MonoBehaviour
                     if (shiftCount > 0)
                     {
                         // full cell: shift
-                        Shift(col, row, shiftCount, hex);
+                        callbackAggregator.JobStarted();
+                        Shift(col, row, shiftCount, hex, callbackAggregator.JobFinished);
                     }
                 }
             }
@@ -44,17 +47,16 @@ public class GridShifter : MonoBehaviour
                 // data shift can be instant, nothing will/should interfere
                 HexagonDatabase.Instance[fillTarget] = hex;
 
-                // TODO : callback?
+                callbackAggregator.JobStarted();
                 hex.GetComponent<Hexagon>()
-                    .MoveAndCallback(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f, null);
+                    .MoveAndCallback(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f, callbackAggregator.JobFinished);
             }
         }
 
-        // TODO : wait for animations before invoking callback?
-        callback?.Invoke();
+        callbackAggregator.PermitCallback();
     }
 
-    private static void Shift(int col, int row, int shiftCount, GameObject hex)
+    private static void Shift(int col, int row, int shiftCount, GameObject hex, Action callback)
     {
         Debug.Log($"{nameof(GridShifter)}.{nameof(Shift)}: shifting... " +
                   $"pos: [{col}, {row}] shiftCount: {shiftCount} {nameof(hex)}: {hex}");
@@ -64,8 +66,7 @@ public class GridShifter : MonoBehaviour
 
         var newCoords = new OffsetCoordinates(col, row - shiftCount);
 
-        // TODO : callback?
         hex.GetComponent<Hexagon>()
-            .MoveAndCallback(newCoords.ToUnity(GameParamsDatabase.Instance.Size), 0.5f, null);
+            .MoveAndCallback(newCoords.ToUnity(GameParamsDatabase.Instance.Size), 0.5f, callback);
     }
 }

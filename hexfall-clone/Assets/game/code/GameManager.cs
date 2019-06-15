@@ -214,7 +214,6 @@ public class GameManager : MonoBehaviour
 
     private void RequestShift()
     {
-        // TODO : wait for callback?
         GetComponent<GridShifter>().ShiftAll(() => CheckAndHandleMatches());
     }
 
