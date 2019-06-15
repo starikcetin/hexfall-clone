@@ -27,4 +27,19 @@ public class HexagonDatabase : Singleton<HexagonDatabase>
 //    {
 //        this[coords] = null;
 //    }
+
+    /// <summary>
+    /// Swaps the [col, rowA] with [col, rowB].
+    /// </summary>
+    public static void Swap(int col, int rowA, int rowB)
+    {
+        // temp <- b
+        var temp = HexagonDatabase.Instance.HexagonGrid[col, rowB];
+
+        // b <- a
+        HexagonDatabase.Instance.HexagonGrid[col, rowB] = HexagonDatabase.Instance.HexagonGrid[col, rowA];
+
+        // a <- temp
+        HexagonDatabase.Instance.HexagonGrid[col, rowA] = temp;
+    }
 }

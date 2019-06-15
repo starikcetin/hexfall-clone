@@ -145,9 +145,7 @@ public class GameManager : MonoBehaviour
 
         // sync the position of the GameObject TODO: we might move this to a Hexagon class.
         //hex.transform.position = coords.ToUnity(GameParamsDatabase.Instance.Size);
-        hex.transform.positionTransition(coords.ToUnity(GameParamsDatabase.Instance.Size), 0.25f)
-            .JoinTransition()
-            .EventTransition(callback, 0.1f);
+        hex.GetComponent<Hexagon>().MoveAndCallback(coords.ToUnity(GameParamsDatabase.Instance.Size), 0.25f, callback);
     }
 
     private bool CheckAndHandleMatches()
@@ -160,12 +158,20 @@ public class GameManager : MonoBehaviour
 
             if (isMatch)
             {
-                HandleMatch(group);
                 matchFound = true;
+                HandleMatch(group);
             }
         }
 
+        RequestShift();
+
         return matchFound;
+    }
+
+    private void RequestShift()
+    {
+        // TODO : wait for callback?
+        GetComponent<GridShifter>().ShiftAll(null);
     }
 
     private bool CheckForMatch(HexagonGroup group)
