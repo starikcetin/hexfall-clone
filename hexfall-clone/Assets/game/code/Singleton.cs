@@ -17,7 +17,10 @@ public class Singleton<T> : MonoBehaviour
 
     private void OnDestroy()
     {
-        Instance = null;
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 
     private void EnsureSingleton()

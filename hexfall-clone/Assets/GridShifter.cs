@@ -30,7 +30,24 @@ public class GridShifter : MonoBehaviour
                 }
             }
 
+            var rowLength = HexagonDatabase.Instance.HexagonGrid.GetLength(1);
+            var refillSpawnRow = rowLength + 2;
+
             // TODO : refill. The amount is exactly <shiftCount>.
+            for (var i = rowLength - shiftCount; i < rowLength; i++)
+            {
+                var fillTarget = new OffsetCoordinates(col, i);
+
+                var hex = HexagonGridBuilder.Instance.CreateHexagon(GameParamsDatabase.Instance.Size,
+                    new OffsetCoordinates(col, refillSpawnRow));
+
+                // data shift can be instant, nothing will/should interfere
+                HexagonDatabase.Instance[fillTarget] = hex;
+
+                // TODO : callback?
+                hex.GetComponent<Hexagon>()
+                    .MoveAndCallback(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f, null);
+            }
         }
 
         // TODO : wait for animations before invoking callback?
@@ -39,7 +56,8 @@ public class GridShifter : MonoBehaviour
 
     private static void Shift(int col, int row, int shiftCount, GameObject hex)
     {
-        Debug.Log($"{nameof(GridShifter)}.{nameof(Shift)}: shifting... pos: [{col}, {row}] shiftCount: {shiftCount} {nameof(hex)}: {hex}");
+        Debug.Log($"{nameof(GridShifter)}.{nameof(Shift)}: shifting... " +
+                  $"pos: [{col}, {row}] shiftCount: {shiftCount} {nameof(hex)}: {hex}");
 
         // data shift can be instant, nothing will/should interfere
         HexagonDatabase.Swap(col, row, row - shiftCount);
