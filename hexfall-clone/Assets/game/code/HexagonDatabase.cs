@@ -22,4 +22,9 @@ public class HexagonDatabase : Singleton<HexagonDatabase>
         this[group.Bravo],
         this[group.Charlie]
     );
+
+//    public void MarkAsDestroyed(OffsetCoordinates coords)
+//    {
+//        this[coords] = null;
+//    }
 }
