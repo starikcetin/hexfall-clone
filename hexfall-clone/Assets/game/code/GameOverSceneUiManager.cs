@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class GameOverSceneUiManager : MonoBehaviour
 {
-    [SerializeField] private SceneAsset _gameScene;
+    [SerializeField] private SceneReference _gameScene;
     [SerializeField] private EventButton _newGameButton;
     [SerializeField] private Text _score;
 
@@ -29,6 +29,6 @@ public class GameOverSceneUiManager : MonoBehaviour
     {
         Debug.Log(nameof(NewGameButtonOnClick));
 
-        SceneManager.LoadScene(_gameScene.name);
+        SceneManager.LoadScene(_gameScene.ScenePath);
     }
 }

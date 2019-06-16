@@ -782,7 +782,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ccaae954ef9ba143860a6dd312c4668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameOverScene: {fileID: 102900000, guid: 4d2a7b1127ea10e4ab18648e2b578634, type: 3}
+  _gameOverScene:
+    sceneAsset: {fileID: 102900000, guid: 4d2a7b1127ea10e4ab18648e2b578634, type: 3}
+    scenePath: Assets/game/scenes/game over.unity
 --- !u!114 &1332434250
 MonoBehaviour:
   m_ObjectHideFlags: 0
