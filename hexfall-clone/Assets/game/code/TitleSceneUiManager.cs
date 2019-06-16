@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class TitleSceneUiManager : MonoBehaviour
 {
     [SerializeField] private EventButton _newGameButton;
-    [SerializeField] private SceneAsset _gameScene;
+    [SerializeField] private SceneReference _gameScene;
 
     private void Start()
     {
@@ -25,6 +25,6 @@ public class TitleSceneUiManager : MonoBehaviour
     {
         Debug.Log(nameof(NewGameButtonOnClick));
 
-        SceneManager.LoadScene(_gameScene.name);
+        SceneManager.LoadScene(_gameScene.ScenePath);
     }
 }

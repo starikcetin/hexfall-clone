@@ -385,7 +385,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b7fa67257e84440baadc776b130d54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameScene: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+  _gameScene:
+    sceneAsset: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+    scenePath: Assets/game/scenes/development.unity
   _newGameButton: {fileID: 225631598}
   _score: {fileID: 775747048}
 --- !u!4 &671806267

@@ -5,3 +5,6 @@
 [submodule "submodules/Eflatun.Expansions"]
 	path = submodules/Eflatun.Expansions
 	url = https://github.com/starikcetin/Eflatun.Expansions
+[submodule "submodules/JohannesMP.SceneReference"]
+	path = submodules/JohannesMP.SceneReference
+	url = https://gist.github.com/ec7d3f0bcf167dab3d0d3bb480e0e07b.git
