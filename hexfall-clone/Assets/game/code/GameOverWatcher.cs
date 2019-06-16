@@ -7,18 +7,18 @@ public class GameOverWatcher : MonoBehaviour
 {
     private void Start()
     {
-        GameManager.Instance.ActionDone += GameManagerOnActionDone;
+        GameManager.Instance.ActionSequenceCompleted += GameManagerOnActionSequenceCompleted;
     }
 
     private void OnDestroy()
     {
         if (GameManager.Instance)
         {
-            GameManager.Instance.ActionDone -= GameManagerOnActionDone;
+            GameManager.Instance.ActionSequenceCompleted -= GameManagerOnActionSequenceCompleted;
         }
     }
 
-    private void GameManagerOnActionDone()
+    private void GameManagerOnActionSequenceCompleted()
     {
         bool areTherePossibleMoves = AreTherePossibleMoves();
 

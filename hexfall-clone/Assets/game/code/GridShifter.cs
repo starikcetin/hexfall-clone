@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using starikcetin.hexfallClone;
 using UnityEngine;
 
@@ -24,9 +25,9 @@ public class GridShifter : MonoBehaviour
         _shouldSpawnBomb = true;
     }
 
-    public void ShiftAll(Action callback)
+    public IEnumerator ShiftAndRefillAll()
     {
-        var callbackAggregator = new CallbackAggregator(callback);
+        var jobCounter = new JobCounter(true);
 
         for (int col = 0; col < HexagonDatabase.Instance.HexagonGrid.GetLength(0); col++)
         {
@@ -47,8 +48,8 @@ public class GridShifter : MonoBehaviour
                     if (shiftCount > 0)
                     {
                         // full cell: shift
-                        callbackAggregator.JobStarted();
-                        Shift(col, row, shiftCount, hex, callbackAggregator.JobFinished);
+                        jobCounter.JobStarted();
+                        StartCoroutine(Shift(col, row, shiftCount, hex, jobCounter.JobFinished));
                     }
                 }
             }
@@ -57,32 +58,40 @@ public class GridShifter : MonoBehaviour
             var refillSpawnRow = rowLength + 2;
 
             // refill. The amount is exactly <shiftCount>.
-            for (var i = rowLength - shiftCount; i < rowLength; i++)
+            for (var row = rowLength - shiftCount; row < rowLength; row++)
             {
-                var fillTarget = new OffsetCoordinates(col, i);
-
-                var hex = HexagonGridBuilder.Instance.CreateHexagon(GameParamsDatabase.Instance.Size,
-                    new OffsetCoordinates(col, refillSpawnRow), _shouldSpawnBomb);
-
-                if (_shouldSpawnBomb)
-                {
-                    _shouldSpawnBomb = false;
-                }
-
-                // data shift can be instant, nothing will/should interfere
-                HexagonDatabase.Instance[fillTarget] = hex;
-
-                callbackAggregator.JobStarted();
-                hex.GetComponent<Hexagon>()
-                    .MoveAndCallback(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f,
-                        callbackAggregator.JobFinished);
+                jobCounter.JobStarted();
+                StartCoroutine(Refill(col, row, refillSpawnRow, jobCounter.JobFinished));
             }
         }
 
-        callbackAggregator.PermitCallback();
+        jobCounter.PermitCompletion();
+
+        yield return new WaitUntil(() => jobCounter.IsCompleted);
     }
 
-    private static void Shift(int col, int row, int shiftCount, GameObject hex, Action callback)
+    private IEnumerator Refill(int col, int row, int refillSpawnRow, Action callback)
+    {
+        var fillTarget = new OffsetCoordinates(col, row);
+
+        var hex = HexagonGridBuilder.Instance.CreateHexagon(GameParamsDatabase.Instance.Size,
+            new OffsetCoordinates(col, refillSpawnRow), _shouldSpawnBomb);
+
+        if (_shouldSpawnBomb)
+        {
+            _shouldSpawnBomb = false;
+        }
+
+        // data shift can be instant, nothing will/should interfere
+        HexagonDatabase.Instance[fillTarget] = hex;
+
+        yield return
+            hex.GetComponent<Hexagon>().MoveTo(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f);
+
+        callback();
+    }
+
+    private static IEnumerator Shift(int col, int row, int shiftCount, GameObject hex, Action callback)
     {
         Debug.Log($"{nameof(GridShifter)}.{nameof(Shift)}: shifting... " +
                   $"pos: [{col}, {row}] shiftCount: {shiftCount} {nameof(hex)}: {hex}");
@@ -92,7 +101,9 @@ public class GridShifter : MonoBehaviour
 
         var newCoords = new OffsetCoordinates(col, row - shiftCount);
 
-        hex.GetComponent<Hexagon>()
-            .MoveAndCallback(newCoords.ToUnity(GameParamsDatabase.Instance.Size), 0.5f, callback);
+        yield return
+            hex.GetComponent<Hexagon>().MoveTo(newCoords.ToUnity(GameParamsDatabase.Instance.Size), 0.5f);
+
+        callback();
     }
 }
