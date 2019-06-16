@@ -13,7 +13,6 @@ public class ScoreDatabase : SceneSingleton<ScoreDatabase>
         // 5 points per hexagon
         // TODO make a game parameter
         Score += 5;
-        UnityEngine.Debug.Log($"Score: {Score}");
 
         if (Score > 0 && Score % GameParamsDatabase.Instance.BombScore == 0)
         {
