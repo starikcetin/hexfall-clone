@@ -24,6 +24,8 @@ public class GameManager : SceneSingleton<GameManager>
 
         _inputManager.Swiped += InputManagerOnSwiped;
         _inputManager.Tapped += InputManagerOnTapped;
+
+        ScoreDatabase.Instance.ResetScore();
     }
 
     protected void OnDestroy()

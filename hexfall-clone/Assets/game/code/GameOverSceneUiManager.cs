@@ -2,15 +2,19 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class TitleSceneUiManager : MonoBehaviour
+public class GameOverSceneUiManager : MonoBehaviour
 {
-    [SerializeField] private EventButton _newGameButton;
     [SerializeField] private SceneAsset _gameScene;
+    [SerializeField] private EventButton _newGameButton;
+    [SerializeField] private Text _score;
 
     private void Start()
     {
         _newGameButton.OnClick += NewGameButtonOnClick;
+
+        _score.text = ScoreDatabase.Instance.Score.ToString();
     }
 
     private void OnDestroy()

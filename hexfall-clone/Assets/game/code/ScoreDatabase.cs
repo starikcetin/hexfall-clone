@@ -1,7 +1,8 @@
 ﻿using System;
 using Eflatun.UnityCommon.Utils.CodePatterns;
+using UnityEngine;
 
-public class ScoreDatabase : SceneSingleton<ScoreDatabase>
+public class ScoreDatabase : GlobalSingleton<ScoreDatabase>
 {
     public event Action<int> ScoreChanged;
     public event Action BombScoreReached;
@@ -20,5 +21,11 @@ public class ScoreDatabase : SceneSingleton<ScoreDatabase>
         }
 
         ScoreChanged?.Invoke(Score);
+    }
+
+    public void ResetScore()
+    {
+        Debug.Log(nameof(ResetScore));
+        Score = 0;
     }
 }
