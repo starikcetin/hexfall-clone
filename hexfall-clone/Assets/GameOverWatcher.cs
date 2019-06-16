@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using starikcetin.hexfallClone;
 using UnityEngine;
 
@@ -20,7 +21,9 @@ public class GameOverWatcher : MonoBehaviour
 
     private void GameManagerOnActionDone()
     {
-        if (false == AreTherePossibleMoves())
+        bool areTherePossibleMoves = AreTherePossibleMoves();
+
+        if (false == areTherePossibleMoves)
         {
             GameOverHandler.Instance.DeclareGameOver();
         }
@@ -34,13 +37,23 @@ public class GameOverWatcher : MonoBehaviour
 
         foreach (var group in HexagonGroupDatabase.Instance.HexagonGroups)
         {
-            if (HasTwoColourPair(group, out var thirdSpot, out var foundColor))
+            if (HasTwoColourPair(group, out var pairSpots, out var thirdSpot, out var foundColor))
             {
-                var neighbors = GetGroupsContainingSpot(thirdSpot, except: group);
+                var (indirectNeighbors, directNeighbors) = FindNeighbors(thirdSpot, otherSpots: pairSpots);
 
-                foreach (var g in neighbors)
+                foreach (var g in indirectNeighbors)
                 {
-                    if (ContainsColor(g, foundColor))
+                    // indirect neighbors need at least one in order to qualify.
+                    if (CountForColor(g, foundColor) > 0)
+                    {
+                        return true;
+                    }
+                }
+
+                foreach (var g in directNeighbors)
+                {
+                    // direct neighbors already have one due to sharing two spots. they need two in order to qualify.
+                    if (CountForColor(g, foundColor) > 1)
                     {
                         return true;
                     }
@@ -55,9 +68,11 @@ public class GameOverWatcher : MonoBehaviour
     /// Checks if there are any colours that exists two times in the <paramref name="group"/>.
     /// </summary>
     /// <param name="group">The group to check.</param>
-    /// <param name="thirdSpot">The third spot, i.e. the spot that has a different color. (Charlie if method returns false)</param>
+    /// <param name="pairSpots">The spots where the color pair is located. (null if method returns false)</param>
+    /// <param name="thirdSpot">The third commonSpot, i.e. the commonSpot that has a different color. (Charlie if method returns false)</param>
     /// <param name="foundColor">The colour that exists 2 times in this group. (Color.Clear if method returns false)</param>
-    private bool HasTwoColourPair(HexagonGroup group, out OffsetCoordinates thirdSpot, out Color foundColor)
+    private bool HasTwoColourPair(HexagonGroup group, out OffsetCoordinates[] pairSpots,
+        out OffsetCoordinates thirdSpot, out Color foundColor)
     {
         var (ac, bc, cc) = GetColors(group);
 
@@ -65,6 +80,7 @@ public class GameOverWatcher : MonoBehaviour
         {
             thirdSpot = group.Charlie;
             foundColor = ac;
+            pairSpots = new[] {group.Alpha, group.Bravo};
             return true;
         }
 
@@ -72,6 +88,7 @@ public class GameOverWatcher : MonoBehaviour
         {
             thirdSpot = group.Alpha;
             foundColor = bc;
+            pairSpots = new[] {group.Bravo, group.Charlie};
             return true;
         }
 
@@ -79,32 +96,63 @@ public class GameOverWatcher : MonoBehaviour
         {
             thirdSpot = group.Bravo;
             foundColor = ac;
+            pairSpots = new[] {group.Alpha, group.Charlie};
             return true;
         }
 
         thirdSpot = group.Charlie;
         foundColor = Color.clear;
+        pairSpots = null;
         return false;
     }
 
     /// <summary>
-    /// Returns the groups that contains the <paramref name="spot"/>. Excludes <paramref name="except"/>.
+    /// Returns the groups that contains the <paramref name="commonSpot"/>. Excludes <paramref name="otherSpots"/>.
+    /// Direct neighbors: neighbors that share 1 spot from <paramref name="otherSpots"/> along with the <paramref name="commonSpot"/>.
+    /// Indirect neighbors: neighbors that share only the <paramref name="commonSpot"/>.
     /// </summary>
-    private IEnumerable<HexagonGroup> GetGroupsContainingSpot(OffsetCoordinates spot, HexagonGroup except)
+    private (List<HexagonGroup> indirectNeighbors, List<HexagonGroup> directNeighbors)
+        FindNeighbors(OffsetCoordinates commonSpot, OffsetCoordinates[] otherSpots)
     {
-        return HexagonGroupDatabase.Instance.HexagonGroups
-            .Where(g => g.Alpha == spot || g.Bravo == spot || g.Charlie == spot)
-            .Except(new[] {except});
+        var indirectNeighbors = new List<HexagonGroup>();
+        var directNeighbors = new List<HexagonGroup>();
+
+        foreach (var g in HexagonGroupDatabase.Instance.HexagonGroups)
+        {
+            if (Contains(g, commonSpot))
+            {
+                var otherSpotCount = otherSpots.Count(s => Contains(g, s));
+
+                if (otherSpotCount == 0)
+                {
+                    indirectNeighbors.Add(g);
+                }
+                else if (otherSpotCount == 1)
+                {
+                    directNeighbors.Add(g);
+                }
+
+                // if it contains both of the other spots, it is the group itself, not one of the neighbors.
+            }
+        }
+
+        return (indirectNeighbors, directNeighbors);
     }
 
     /// <summary>
     /// Checks if <paramref name="hexagonGroup"/> contains <paramref name="foundColor"/>.
     /// </summary>
-    private bool ContainsColor(HexagonGroup hexagonGroup, Color foundColor)
+    private static int CountForColor(HexagonGroup hexagonGroup, Color foundColor)
     {
+        int count = 0;
+
         var (ac, bc, cc) = GetColors(hexagonGroup);
 
-        return ac == foundColor || bc == foundColor || cc == foundColor;
+        if (ac == foundColor) count++;
+        if (bc == foundColor) count++;
+        if (cc == foundColor) count++;
+
+        return count;
     }
 
     private static (Color alphaColor, Color bravoColor, Color charlieColor) GetColors(HexagonGroup group)
@@ -112,5 +160,10 @@ public class GameOverWatcher : MonoBehaviour
         var (a, b, c) = HexagonDatabase.Instance[group];
         var (ah, bh, ch) = (a.GetComponent<Hexagon>(), b.GetComponent<Hexagon>(), c.GetComponent<Hexagon>());
         return (ah.Color, bh.Color, ch.Color);
+    }
+
+    private static bool Contains(HexagonGroup g, OffsetCoordinates oc)
+    {
+        return g.Alpha == oc || g.Bravo == oc || g.Charlie == oc;
     }
 }

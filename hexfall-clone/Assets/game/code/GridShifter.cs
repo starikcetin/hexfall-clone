@@ -13,7 +13,10 @@ public class GridShifter : MonoBehaviour
 
     private void OnDestroy()
     {
-        ScoreDatabase.Instance.BombScoreReached -= OnBombScoreReached;
+        if (ScoreDatabase.Instance)
+        {
+            ScoreDatabase.Instance.BombScoreReached -= OnBombScoreReached;
+        }
     }
 
     private void OnBombScoreReached()
