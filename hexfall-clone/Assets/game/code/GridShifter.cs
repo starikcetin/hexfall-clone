@@ -27,8 +27,7 @@ public class GridShifter : MonoBehaviour
 
     public IEnumerator ShiftAndRefillAll()
     {
-        bool everythingIsDone = false;
-        var callbackAggregator = new CallbackAggregator((() => everythingIsDone = true));
+        var jobCounter = new JobCounter(true);
 
         for (int col = 0; col < HexagonDatabase.Instance.HexagonGrid.GetLength(0); col++)
         {
@@ -49,8 +48,8 @@ public class GridShifter : MonoBehaviour
                     if (shiftCount > 0)
                     {
                         // full cell: shift
-                        callbackAggregator.JobStarted();
-                        StartCoroutine(Shift(col, row, shiftCount, hex, callbackAggregator.JobFinished));
+                        jobCounter.JobStarted();
+                        StartCoroutine(Shift(col, row, shiftCount, hex, jobCounter.JobFinished));
                     }
                 }
             }
@@ -61,14 +60,14 @@ public class GridShifter : MonoBehaviour
             // refill. The amount is exactly <shiftCount>.
             for (var row = rowLength - shiftCount; row < rowLength; row++)
             {
-                callbackAggregator.JobStarted();
-                StartCoroutine(Refill(col, row, refillSpawnRow, callbackAggregator.JobFinished));
+                jobCounter.JobStarted();
+                StartCoroutine(Refill(col, row, refillSpawnRow, jobCounter.JobFinished));
             }
         }
 
-        callbackAggregator.PermitCallback();
+        jobCounter.PermitCompletion();
 
-        yield return new WaitUntil(() => everythingIsDone);
+        yield return new WaitUntil(() => jobCounter.IsCompleted);
     }
 
     private IEnumerator Refill(int col, int row, int refillSpawnRow, Action callback)
