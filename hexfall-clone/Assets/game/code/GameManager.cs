@@ -7,8 +7,7 @@ using UnityEngine;
 
 public class GameManager : SceneSingleton<GameManager>
 {
-    // TODO: rename for ActionSequenceCompleted?
-    public event Action ActionDone;
+    public event Action ActionSequenceCompleted;
 
     private bool _isSelectionActive = false;
 
@@ -80,7 +79,7 @@ public class GameManager : SceneSingleton<GameManager>
                 throw new ArgumentOutOfRangeException(nameof(swipeDirection), swipeDirection, null);
         }
 
-        ActionDone?.Invoke();
+        ActionSequenceCompleted?.Invoke();
     }
 
     private IEnumerator RotateSequence(RotationDirection direction)
