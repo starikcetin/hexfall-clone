@@ -1,7 +1,8 @@
-﻿using starikcetin.hexfallClone;
+﻿using Eflatun.UnityCommon.Utils.CodePatterns;
+using starikcetin.hexfallClone;
 using UnityEngine;
 
-public class HexagonDatabase : Singleton<HexagonDatabase>
+public class HexagonDatabase : SceneSingleton<HexagonDatabase>
 {
     /// <summary>
     /// Dim0 = col

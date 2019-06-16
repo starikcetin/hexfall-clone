@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Eflatun.UnityCommon.Utils.CodePatterns;
 using Lean.Transition;
 using starikcetin.hexfallClone;
 using UnityEngine;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : SceneSingleton<GameManager>
 {
     // TODO: rename for ActionSequenceCompleted?
     public event Action ActionDone;
@@ -26,7 +27,7 @@ public class GameManager : Singleton<GameManager>
         _inputManager.Tapped += InputManagerOnTapped;
     }
 
-    protected override void _OnDestroy()
+    protected void OnDestroy()
     {
         _inputManager.Swiped -= InputManagerOnSwiped;
         _inputManager.Tapped -= InputManagerOnTapped;

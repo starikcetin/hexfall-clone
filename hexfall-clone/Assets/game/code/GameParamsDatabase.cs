@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Eflatun.UnityCommon.Utils.CodePatterns;
+using UnityEngine;
 
-public class GameParamsDatabase : Singleton<GameParamsDatabase>
+public class GameParamsDatabase : SceneSingleton<GameParamsDatabase>
 {
     [SerializeField] private int _bombLife;
     public int BombLife => _bombLife;

@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Eflatun.UnityCommon.Utils.CodePatterns;
 using UnityEditor;
 using UnityEngine;
 
 namespace starikcetin.hexfallClone
 {
-    public class HexagonGridBuilder : Singleton<HexagonGridBuilder>
+    public class HexagonGridBuilder : SceneSingleton<HexagonGridBuilder>
     {
         [SerializeField] private int _columnCount, _rowCount;
         [SerializeField] private float _size;
@@ -25,7 +26,7 @@ namespace starikcetin.hexfallClone
         /// </summary>
         private float HexVerticalDistance => HexHeight;
 
-        protected override void _Awake()
+        protected void Awake()
         {
             // Write Game Params
             GameParamsDatabase.Instance.Size = _size;
