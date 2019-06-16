@@ -384,6 +384,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _newGameButton: {fileID: 225631598}
+  _gameSceneName: development
+  _titleSceneName: title
 --- !u!4 &671806267
 Transform:
   m_ObjectHideFlags: 0

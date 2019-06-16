@@ -1,10 +1,13 @@
 ﻿using System;
 using Eflatun.UnityCommon.Utils.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TitleSceneUiManager : MonoBehaviour
 {
     [SerializeField] private EventButton _newGameButton;
+    [SerializeField] private string _gameSceneName;
+    [SerializeField] private string _titleSceneName;
 
     private void Start()
     {
@@ -23,29 +26,6 @@ public class TitleSceneUiManager : MonoBehaviour
     {
         Debug.Log(nameof(NewGameButtonOnClick));
 
-        LoadGameScene();
-        InitializeNewGame();
-        UnloadTitleScene();
-    }
-
-    private void LoadGameScene()
-    {
-        Debug.Log(nameof(LoadGameScene));
-
-        throw new NotImplementedException();
-    }
-
-    private void InitializeNewGame()
-    {
-        Debug.Log(nameof(InitializeNewGame));
-
-        throw new NotImplementedException();
-    }
-
-    private void UnloadTitleScene()
-    {
-        Debug.Log(nameof(UnloadTitleScene));
-
-        throw new NotImplementedException();
+        SceneManager.LoadScene(_gameSceneName);
     }
 }

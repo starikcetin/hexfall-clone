@@ -3,6 +3,7 @@ using Eflatun.UnityCommon.Utils.CodePatterns;
 
 public class ScoreDatabase : SceneSingleton<ScoreDatabase>
 {
+    public event Action<int> ScoreChanged;
     public event Action BombScoreReached;
 
     public int Score { get; private set; }
@@ -18,5 +19,7 @@ public class ScoreDatabase : SceneSingleton<ScoreDatabase>
         {
             BombScoreReached?.Invoke();
         }
+
+        ScoreChanged?.Invoke(Score);
     }
 }
