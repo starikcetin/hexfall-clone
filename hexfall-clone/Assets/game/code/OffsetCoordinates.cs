@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace starikcetin.hexfallClone
@@ -7,7 +8,7 @@ namespace starikcetin.hexfallClone
     /// Odd-Q: Odd columns are offset.
     /// Flat-Top.
     /// </summary>
-    public struct OffsetCoordinates
+    public struct OffsetCoordinates : IEquatable<OffsetCoordinates>
     {
         public int Row { get; }
         public int Col { get; }
@@ -48,6 +49,34 @@ namespace starikcetin.hexfallClone
         {
             // this is not due to laziness, I just want to reduce the possible points of failure (sweet lies)
             return ToCube().ToUnity(size);
+        }
+
+        public bool Equals(OffsetCoordinates other)
+        {
+            return Row == other.Row && Col == other.Col;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is OffsetCoordinates other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Row * 397) ^ Col;
+            }
+        }
+
+        public static bool operator ==(OffsetCoordinates left, OffsetCoordinates right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(OffsetCoordinates left, OffsetCoordinates right)
+        {
+            return !left.Equals(right);
         }
     }
 }

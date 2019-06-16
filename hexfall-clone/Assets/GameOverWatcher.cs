@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using starikcetin.hexfallClone;
 using UnityEngine;
@@ -95,7 +94,9 @@ public class GameOverWatcher : MonoBehaviour
     /// </summary>
     private IEnumerable<HexagonGroup> GetGroupsContainingSpot(OffsetCoordinates spot, HexagonGroup except)
     {
-        throw new NotImplementedException();
+        return HexagonGroupDatabase.Instance.HexagonGroups
+            .Where(g => g.Alpha == spot || g.Bravo == spot || g.Charlie == spot)
+            .Except(new[] {except});
     }
 
     /// <summary>
@@ -104,7 +105,7 @@ public class GameOverWatcher : MonoBehaviour
     private bool ContainsColor(HexagonGroup hexagonGroup, Color foundColor)
     {
         var (ac, bc, cc) = GetColors(hexagonGroup);
-        
+
         return ac == foundColor || bc == foundColor || cc == foundColor;
     }
 
