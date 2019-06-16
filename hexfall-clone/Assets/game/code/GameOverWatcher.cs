@@ -44,7 +44,7 @@ public class GameOverWatcher : MonoBehaviour
                 foreach (var g in indirectNeighbors)
                 {
                     // indirect neighbors need at least one in order to qualify.
-                    if (CountForColor(g, foundColor) > 0)
+                    if (Utils.CountForColor(g, foundColor) > 0)
                     {
                         return true;
                     }
@@ -53,7 +53,7 @@ public class GameOverWatcher : MonoBehaviour
                 foreach (var g in directNeighbors)
                 {
                     // direct neighbors already have one due to sharing two spots. they need two in order to qualify.
-                    if (CountForColor(g, foundColor) > 1)
+                    if (Utils.CountForColor(g, foundColor) > 1)
                     {
                         return true;
                     }
@@ -74,7 +74,7 @@ public class GameOverWatcher : MonoBehaviour
     private bool HasTwoColourPair(HexagonGroup group, out OffsetCoordinates[] pairSpots,
         out OffsetCoordinates thirdSpot, out Color foundColor)
     {
-        var (ac, bc, cc) = GetColors(group);
+        var (ac, bc, cc) = Utils.GetColors(group);
 
         if (ac == bc)
         {
@@ -111,7 +111,7 @@ public class GameOverWatcher : MonoBehaviour
     /// Direct neighbors: neighbors that share 1 spot from <paramref name="otherSpots"/> along with the <paramref name="commonSpot"/>.
     /// Indirect neighbors: neighbors that share only the <paramref name="commonSpot"/>.
     /// </summary>
-    private (List<HexagonGroup> indirectNeighbors, List<HexagonGroup> directNeighbors)
+    private static (List<HexagonGroup> indirectNeighbors, List<HexagonGroup> directNeighbors)
         FindNeighbors(OffsetCoordinates commonSpot, OffsetCoordinates[] otherSpots)
     {
         var indirectNeighbors = new List<HexagonGroup>();
@@ -119,51 +119,27 @@ public class GameOverWatcher : MonoBehaviour
 
         foreach (var g in HexagonGroupDatabase.Instance.HexagonGroups)
         {
-            if (Contains(g, commonSpot))
+            if (Utils.Contains(g, commonSpot))
             {
-                var otherSpotCount = otherSpots.Count(s => Contains(g, s));
+                var otherSpotCount = otherSpots.Count(s => Utils.Contains(g, s));
 
-                if (otherSpotCount == 0)
+                switch (otherSpotCount)
                 {
-                    indirectNeighbors.Add(g);
-                }
-                else if (otherSpotCount == 1)
-                {
-                    directNeighbors.Add(g);
-                }
+                    case 0:
+                        indirectNeighbors.Add(g);
+                        break;
 
-                // if it contains both of the other spots, it is the group itself, not one of the neighbors.
+                    case 1:
+                        directNeighbors.Add(g);
+                        break;
+
+//                    case 2:
+//                        // if it contains both of the other spots, it is the group itself, not one of the neighbors.
+//                        break;
+                }
             }
         }
 
         return (indirectNeighbors, directNeighbors);
-    }
-
-    /// <summary>
-    /// Checks if <paramref name="hexagonGroup"/> contains <paramref name="foundColor"/>.
-    /// </summary>
-    private static int CountForColor(HexagonGroup hexagonGroup, Color foundColor)
-    {
-        int count = 0;
-
-        var (ac, bc, cc) = GetColors(hexagonGroup);
-
-        if (ac == foundColor) count++;
-        if (bc == foundColor) count++;
-        if (cc == foundColor) count++;
-
-        return count;
-    }
-
-    private static (Color alphaColor, Color bravoColor, Color charlieColor) GetColors(HexagonGroup group)
-    {
-        var (a, b, c) = HexagonDatabase.Instance[group];
-        var (ah, bh, ch) = (a.GetComponent<Hexagon>(), b.GetComponent<Hexagon>(), c.GetComponent<Hexagon>());
-        return (ah.Color, bh.Color, ch.Color);
-    }
-
-    private static bool Contains(HexagonGroup g, OffsetCoordinates oc)
-    {
-        return g.Alpha == oc || g.Bravo == oc || g.Charlie == oc;
     }
 }
