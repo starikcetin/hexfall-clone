@@ -50,7 +50,7 @@ public class GridShifter : MonoBehaviour
                     {
                         // full cell: shift
                         callbackAggregator.JobStarted();
-                        Shift(col, row, shiftCount, hex, callbackAggregator.JobFinished);
+                        StartCoroutine(Shift(col, row, shiftCount, hex, callbackAggregator.JobFinished));
                     }
                 }
             }
@@ -62,7 +62,7 @@ public class GridShifter : MonoBehaviour
             for (var row = rowLength - shiftCount; row < rowLength; row++)
             {
                 callbackAggregator.JobStarted();
-                Refill(col, row, refillSpawnRow, callbackAggregator.JobFinished);
+                StartCoroutine(Refill(col, row, refillSpawnRow, callbackAggregator.JobFinished));
             }
         }
 
@@ -71,7 +71,7 @@ public class GridShifter : MonoBehaviour
         yield return new WaitUntil(() => everythingIsDone);
     }
 
-    private void Refill(int col, int row, int refillSpawnRow, Action callback)
+    private IEnumerator Refill(int col, int row, int refillSpawnRow, Action callback)
     {
         var fillTarget = new OffsetCoordinates(col, row);
 
@@ -86,12 +86,13 @@ public class GridShifter : MonoBehaviour
         // data shift can be instant, nothing will/should interfere
         HexagonDatabase.Instance[fillTarget] = hex;
 
-        hex.GetComponent<Hexagon>()
-            .MoveAndCallback(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f,
-                callback);
+        yield return
+            hex.GetComponent<Hexagon>().MoveTo(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f);
+
+        callback();
     }
 
-    private static void Shift(int col, int row, int shiftCount, GameObject hex, Action callback)
+    private static IEnumerator Shift(int col, int row, int shiftCount, GameObject hex, Action callback)
     {
         Debug.Log($"{nameof(GridShifter)}.{nameof(Shift)}: shifting... " +
                   $"pos: [{col}, {row}] shiftCount: {shiftCount} {nameof(hex)}: {hex}");
@@ -101,7 +102,9 @@ public class GridShifter : MonoBehaviour
 
         var newCoords = new OffsetCoordinates(col, row - shiftCount);
 
-        hex.GetComponent<Hexagon>()
-            .MoveAndCallback(newCoords.ToUnity(GameParamsDatabase.Instance.Size), 0.5f, callback);
+        yield return
+            hex.GetComponent<Hexagon>().MoveTo(newCoords.ToUnity(GameParamsDatabase.Instance.Size), 0.5f);
+
+        callback();
     }
 }

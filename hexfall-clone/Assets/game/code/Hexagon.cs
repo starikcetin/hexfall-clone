@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Lean.Transition;
 using UnityEngine;
 
@@ -30,11 +31,10 @@ namespace starikcetin.hexfallClone
                 }, 0f);
         }
 
-        public void MoveAndCallback(Vector3 target, float time, Action callback = null)
+        public IEnumerator MoveTo(Vector3 target, float time)
         {
-            transform.positionTransition(target, time)
-                .JoinTransition()
-                .EventTransition(callback, 0f);
+            transform.positionTransition(target, time);
+            yield return new WaitForSeconds(time);
         }
     }
 }

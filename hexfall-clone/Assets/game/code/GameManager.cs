@@ -158,10 +158,8 @@ public class GameManager : SceneSingleton<GameManager>
         HexagonDatabase.Instance[coords] = hex;
 
         // sync the position of the GameObject
-        const float time = 0.25f;
-        hex.GetComponent<Hexagon>().MoveAndCallback(coords.ToUnity(GameParamsDatabase.Instance.Size), time);
-
-        yield return new WaitForSeconds(time);
+        yield return
+            hex.GetComponent<Hexagon>().MoveTo(coords.ToUnity(GameParamsDatabase.Instance.Size), 0.25f);
     }
 
     private IEnumerator CheckAndHandleMatches()
