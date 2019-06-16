@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using starikcetin.hexfallClone;
 using UnityEngine;
 
@@ -24,9 +25,10 @@ public class GridShifter : MonoBehaviour
         _shouldSpawnBomb = true;
     }
 
-    public void ShiftAll(Action callback)
+    public IEnumerator ShiftAll()
     {
-        var callbackAggregator = new CallbackAggregator(callback);
+        bool _everyThingIsDone = false;
+        var callbackAggregator = new CallbackAggregator((() => _everyThingIsDone = true));
 
         for (int col = 0; col < HexagonDatabase.Instance.HexagonGrid.GetLength(0); col++)
         {
@@ -80,6 +82,8 @@ public class GridShifter : MonoBehaviour
         }
 
         callbackAggregator.PermitCallback();
+
+        yield return new WaitUntil(() => _everyThingIsDone);
     }
 
     private static void Shift(int col, int row, int shiftCount, GameObject hex, Action callback)

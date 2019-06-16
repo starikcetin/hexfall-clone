@@ -30,7 +30,7 @@ namespace starikcetin.hexfallClone
                 }, 0f);
         }
 
-        public void MoveAndCallback(Vector3 target, float time, Action callback)
+        public void MoveAndCallback(Vector3 target, float time, Action callback = null)
         {
             transform.positionTransition(target, time)
                 .JoinTransition()
