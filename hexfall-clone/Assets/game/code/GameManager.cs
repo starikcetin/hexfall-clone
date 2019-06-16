@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Lean.Transition;
+using Eflatun.UnityCommon.Utils.CodePatterns;
 using starikcetin.hexfallClone;
 using UnityEngine;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : SceneSingleton<GameManager>
 {
     // TODO: rename for ActionSequenceCompleted?
     public event Action ActionDone;
@@ -26,7 +26,7 @@ public class GameManager : Singleton<GameManager>
         _inputManager.Tapped += InputManagerOnTapped;
     }
 
-    protected override void _OnDestroy()
+    protected void OnDestroy()
     {
         _inputManager.Swiped -= InputManagerOnSwiped;
         _inputManager.Tapped -= InputManagerOnTapped;
@@ -233,19 +233,10 @@ public class GameManager : Singleton<GameManager>
     private bool CheckForMatch(HexagonGroup group)
     {
         var (alpha, bravo, charlie) = HexagonDatabase.Instance[group];
-        return IsSameColor(
+        return Utils.IsSameColor(
             alpha.GetComponent<Hexagon>(),
             bravo.GetComponent<Hexagon>(),
             charlie.GetComponent<Hexagon>());
-    }
-
-    private bool IsSameColor(Hexagon a, Hexagon b, Hexagon c)
-    {
-        var ac = a.Color;
-        var bc = b.Color;
-        var cc = c.Color;
-
-        return ac == bc && bc == cc && ac == cc;
     }
 
     private void Explode(OffsetCoordinates coords)

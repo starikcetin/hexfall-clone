@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Eflatun.UnityCommon.Utils.CodePatterns;
 using MoreLinq;
 using starikcetin.hexfallClone;
 using UnityEngine;
 
-public class HexagonGroupDatabase : Singleton<HexagonGroupDatabase>
+public class HexagonGroupDatabase : SceneSingleton<HexagonGroupDatabase>
 {
     private readonly List<HexagonGroup> _hexagonGroups = new List<HexagonGroup>();
     public IReadOnlyCollection<HexagonGroup> HexagonGroups => _hexagonGroups.AsReadOnly();

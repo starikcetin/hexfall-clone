@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
+using Eflatun.UnityCommon.Utils.CodePatterns;
 using UnityEngine;
 
 namespace starikcetin.hexfallClone
 {
-    public class HexagonGridBuilder : Singleton<HexagonGridBuilder>
+    public class HexagonGridBuilder : SceneSingleton<HexagonGridBuilder>
     {
         [SerializeField] private int _columnCount, _rowCount;
         [SerializeField] private float _size;
@@ -25,7 +23,7 @@ namespace starikcetin.hexfallClone
         /// </summary>
         private float HexVerticalDistance => HexHeight;
 
-        protected override void _Awake()
+        protected void Awake()
         {
             // Write Game Params
             GameParamsDatabase.Instance.Size = _size;
@@ -63,15 +61,7 @@ namespace starikcetin.hexfallClone
                 var bravo = new OffsetCoordinates(col + 1, row + 1);
                 var charlie = new OffsetCoordinates(col + 1, row);
 
-//                var ha = Utils._Debug_Highlight(alpha.ToUnity(_size), Color.white);
-//                var hb = Utils._Debug_Highlight(bravo.ToUnity(_size), Color.white);
-//                var hc = Utils._Debug_Highlight(charlie.ToUnity(_size), Color.white);
-
                 yield return new HexagonGroup(alpha, bravo, charlie);
-
-//                Destroy(ha);
-//                Destroy(hb);
-//                Destroy(hc);
             }
 
             // 2-left even (b)
@@ -83,15 +73,7 @@ namespace starikcetin.hexfallClone
                 var bravo = new OffsetCoordinates(col, row + 1);
                 var charlie = new OffsetCoordinates(col + 1, row + 1);
 
-//                var ha = Utils._Debug_Highlight(alpha.ToUnity(_size), Color.white);
-//                var hb = Utils._Debug_Highlight(bravo.ToUnity(_size), Color.white);
-//                var hc = Utils._Debug_Highlight(charlie.ToUnity(_size), Color.white);
-
                 yield return new HexagonGroup(alpha, bravo, charlie);
-
-//                Destroy(ha);
-//                Destroy(hb);
-//                Destroy(hc);
             }
 
             // 2-right odd (c)
@@ -103,15 +85,7 @@ namespace starikcetin.hexfallClone
                 var bravo = new OffsetCoordinates(col + 1, row);
                 var charlie = new OffsetCoordinates(col + 1, row - 1);
 
-//                var ha = Utils._Debug_Highlight(alpha.ToUnity(_size), Color.black);
-//                var hb = Utils._Debug_Highlight(bravo.ToUnity(_size), Color.black);
-//                var hc = Utils._Debug_Highlight(charlie.ToUnity(_size), Color.black);
-
                 yield return new HexagonGroup(alpha, bravo, charlie);
-
-//                Destroy(ha);
-//                Destroy(hb);
-//                Destroy(hc);
             }
 
             // 2-left odd (d)
@@ -123,15 +97,7 @@ namespace starikcetin.hexfallClone
                 var bravo = new OffsetCoordinates(col, row + 1);
                 var charlie = new OffsetCoordinates(col + 1, row);
 
-//                var ha = Utils._Debug_Highlight(alpha.ToUnity(_size), Color.black);
-//                var hb = Utils._Debug_Highlight(bravo.ToUnity(_size), Color.black);
-//                var hc = Utils._Debug_Highlight(charlie.ToUnity(_size), Color.black);
-
                 yield return new HexagonGroup(alpha, bravo, charlie);
-
-//                Destroy(ha);
-//                Destroy(hb);
-//                Destroy(hc);
             }
         }
 

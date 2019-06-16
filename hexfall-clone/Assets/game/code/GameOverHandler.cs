@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Eflatun.UnityCommon.Utils.CodePatterns;
+using UnityEngine;
 
-public class GameOverHandler : Singleton<GameOverHandler>
+public class GameOverHandler : SceneSingleton<GameOverHandler>
 {
     public void DeclareGameOver()
     {

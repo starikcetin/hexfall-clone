@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Eflatun.UnityCommon.Utils.CodePatterns;
+using UnityEngine;
 
-public class PrefabDatabase : Singleton<PrefabDatabase>
+public class PrefabDatabase : SceneSingleton<PrefabDatabase>
 {
     [SerializeField] private GameObject _hexagon;
     public GameObject Hexagon => _hexagon;

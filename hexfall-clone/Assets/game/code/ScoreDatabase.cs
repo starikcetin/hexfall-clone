@@ -1,6 +1,7 @@
 ﻿using System;
+using Eflatun.UnityCommon.Utils.CodePatterns;
 
-public class ScoreDatabase : Singleton<ScoreDatabase>
+public class ScoreDatabase : SceneSingleton<ScoreDatabase>
 {
     public event Action BombScoreReached;
 
