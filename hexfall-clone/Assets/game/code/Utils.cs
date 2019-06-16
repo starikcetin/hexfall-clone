@@ -48,5 +48,14 @@ namespace starikcetin.hexfallClone
         {
             return g.Alpha == oc || g.Bravo == oc || g.Charlie == oc;
         }
+
+        public static bool IsSameColor(Hexagon a, Hexagon b, Hexagon c)
+        {
+            var ac = a.Color;
+            var bc = b.Color;
+            var cc = c.Color;
+
+            return ac == bc && bc == cc && ac == cc;
+        }
     }
 }

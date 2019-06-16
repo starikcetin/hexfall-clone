@@ -1,4 +1,4 @@
-internal enum RotationDirection
+public enum RotationDirection
 {
     Clockwise,
     CounterClockwise

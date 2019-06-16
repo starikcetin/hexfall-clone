@@ -233,19 +233,10 @@ public class GameManager : SceneSingleton<GameManager>
     private bool CheckForMatch(HexagonGroup group)
     {
         var (alpha, bravo, charlie) = HexagonDatabase.Instance[group];
-        return IsSameColor(
+        return Utils.IsSameColor(
             alpha.GetComponent<Hexagon>(),
             bravo.GetComponent<Hexagon>(),
             charlie.GetComponent<Hexagon>());
-    }
-
-    private bool IsSameColor(Hexagon a, Hexagon b, Hexagon c)
-    {
-        var ac = a.Color;
-        var bc = b.Color;
-        var cc = c.Color;
-
-        return ac == bc && bc == cc && ac == cc;
     }
 
     private void Explode(OffsetCoordinates coords)
