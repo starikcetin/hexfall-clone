@@ -228,7 +228,7 @@ public class GameManager : SceneSingleton<GameManager>
 
     private IEnumerator RequestShift()
     {
-        yield return GetComponent<GridShifter>().ShiftAll();
+        yield return GetComponent<GridShifter>().ShiftAndRefillAll();
     }
 
     private bool CheckForMatch(HexagonGroup group)
