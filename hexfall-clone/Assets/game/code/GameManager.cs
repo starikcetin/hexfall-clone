@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    // TODO: rename for ActionSequenceCompleted?
     public event Action ActionDone;
 
     private bool _isSelectionActive = false;

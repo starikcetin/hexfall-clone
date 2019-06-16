@@ -20,5 +20,33 @@ namespace starikcetin.hexfallClone
             arr[ia] = arr[ib];
             arr[ib] = a;
         }
+
+        /// <summary>
+        /// Checks if <paramref name="hexagonGroup"/> contains <paramref name="foundColor"/>.
+        /// </summary>
+        public static int CountForColor(HexagonGroup hexagonGroup, Color foundColor)
+        {
+            int count = 0;
+
+            var (ac, bc, cc) = GetColors(hexagonGroup);
+
+            if (ac == foundColor) count++;
+            if (bc == foundColor) count++;
+            if (cc == foundColor) count++;
+
+            return count;
+        }
+
+        public static (Color alphaColor, Color bravoColor, Color charlieColor) GetColors(HexagonGroup group)
+        {
+            var (a, b, c) = HexagonDatabase.Instance[@group];
+            var (ah, bh, ch) = (a.GetComponent<Hexagon>(), b.GetComponent<Hexagon>(), c.GetComponent<Hexagon>());
+            return (ah.Color, bh.Color, ch.Color);
+        }
+
+        public static bool Contains(HexagonGroup g, OffsetCoordinates oc)
+        {
+            return g.Alpha == oc || g.Bravo == oc || g.Charlie == oc;
+        }
     }
 }
