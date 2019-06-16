@@ -21,7 +21,13 @@ namespace starikcetin.hexfallClone
 
             transform.localScaleTransition(targetScale, 0.5f)
                 .JoinTransition()
-                .EventTransition(() => Destroy(gameObject), 0f);
+                .EventTransition(() =>
+                {
+                    if (gameObject)
+                    {
+                        Destroy(gameObject);
+                    }
+                }, 0f);
         }
 
         public void MoveAndCallback(Vector3 target, float time, Action callback)
