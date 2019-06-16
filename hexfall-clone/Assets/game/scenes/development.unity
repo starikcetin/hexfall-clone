@@ -578,6 +578,7 @@ GameObject:
   - component: {fileID: 1332434247}
   - component: {fileID: 1332434248}
   - component: {fileID: 1332434249}
+  - component: {fileID: 1332434250}
   m_Layer: 0
   m_Name: game
   m_TagString: Untagged
@@ -635,6 +636,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ccaae954ef9ba143860a6dd312c4668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1332434250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332434245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4555ee9cfd4dae04582dc38af1793ae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1489966769
@@ -705,6 +718,9 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
   - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 1, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 1, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &1489966773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,7 +746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bombLife: 6
-  _bombScore: 50
+  _bombScore: 1000
 --- !u!114 &1489966775
 MonoBehaviour:
   m_ObjectHideFlags: 0

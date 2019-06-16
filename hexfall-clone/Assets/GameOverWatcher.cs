@@ -12,14 +12,15 @@ public class GameOverWatcher : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.Instance.ActionDone -= GameManagerOnActionDone;
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.ActionDone -= GameManagerOnActionDone;
+        }
     }
 
     private void GameManagerOnActionDone()
     {
-        var areTherePossibleMoves = AreTherePossibleMoves();
-
-        if (areTherePossibleMoves == false)
+        if (false == AreTherePossibleMoves())
         {
             GameOverHandler.Instance.DeclareGameOver();
         }
@@ -33,23 +34,20 @@ public class GameOverWatcher : MonoBehaviour
 
         foreach (var group in HexagonGroupDatabase.Instance.HexagonGroups)
         {
-            // skip if this group doesn't have a two color group.
-            if (false == HasTwoColourPair(group, out var thirdSpot, out var foundColor))
+            if (HasTwoColourPair(group, out var thirdSpot, out var foundColor))
             {
-                continue;
-            }
+                var neighbors = GetGroupsContainingSpot(thirdSpot, except: group);
 
-            // check the neighbor groups containing the third spot.
-            var neighbors = GetGroupsContainingSpot(thirdSpot, except: group);
-
-            if (neighbors.Any(g => ContainsColor(g, foundColor)))
-            {
-                // we got a move! :)
-                return true;
+                foreach (var g in neighbors)
+                {
+                    if (ContainsColor(g, foundColor))
+                    {
+                        return true;
+                    }
+                }
             }
         }
 
-        // we could not find any possible moves :(
         return false;
     }
 
@@ -61,7 +59,7 @@ public class GameOverWatcher : MonoBehaviour
     /// <param name="foundColor">The colour that exists 2 times in this group. (Color.Clear if method returns false)</param>
     private bool HasTwoColourPair(HexagonGroup group, out OffsetCoordinates thirdSpot, out Color foundColor)
     {
-        var (ac, bc, cc) = GetColors(@group);
+        var (ac, bc, cc) = GetColors(group);
 
         if (ac == bc)
         {
@@ -79,7 +77,7 @@ public class GameOverWatcher : MonoBehaviour
 
         if (ac == cc)
         {
-            thirdSpot = group.Alpha;
+            thirdSpot = group.Bravo;
             foundColor = ac;
             return true;
         }
