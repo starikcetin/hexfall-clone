@@ -81,7 +81,7 @@ namespace starikcetin.hexfallClone
 
             var x = size * (3f / 2 * Q);
             var y = size * (Mathf.Sqrt(3) / 2 * Q + Mathf.Sqrt(3) * R);
-            return new Vector2(x, y);
+            return new Vector2(x, y) - GameParamsDatabase.Instance.CenterOffset;
         }
 
         [ContractInvariantMethod]

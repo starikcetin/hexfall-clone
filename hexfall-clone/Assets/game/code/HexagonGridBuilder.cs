@@ -27,27 +27,17 @@ namespace starikcetin.hexfallClone
         {
             // Write Game Params
             GameParamsDatabase.Instance.Size = _size;
-            GameParamsDatabase.Instance.CenterOffset = Vector2.zero; //CalculateCenterOffset(size, _columnCount, _rowCount);
+            GameParamsDatabase.Instance.CenterOffset = CalculateCenterOffset(_size, _columnCount, _rowCount);
         }
 
         private void Start()
         {
-            StartCoroutine(AfterStart());
-        }
-
-        IEnumerator AfterStart()
-        {
-            //yield return null;
-
             HexagonDatabase.Instance.HexagonGrid = BuildHexagonGrid(_size);
 
             foreach (var hexagonGroup in AssembleHexagonGroups())
             {
                 HexagonGroupDatabase.Instance.RegisterHexagonGroup(hexagonGroup);
-                //yield return null;
             }
-
-            yield return 0;
         }
 
         private IEnumerable<HexagonGroup> AssembleHexagonGroups()
@@ -127,7 +117,7 @@ namespace starikcetin.hexfallClone
             var prefab = isBomb ? PrefabDatabase.Instance.BombHexagon : PrefabDatabase.Instance.Hexagon;
 
             var newHexagon = Instantiate(prefab, transform);
-            newHexagon.transform.position = offsetCoordinates.ToUnity(size) - GameParamsDatabase.Instance.CenterOffset;
+            newHexagon.transform.position = offsetCoordinates.ToUnity(size);
             var colour = ColourDatabase.Instance.RandomColour();
             newHexagon.GetComponent<Hexagon>().SetColor(colour);
             return newHexagon;
