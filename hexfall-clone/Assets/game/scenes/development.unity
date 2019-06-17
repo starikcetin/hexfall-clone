@@ -710,6 +710,8 @@ MonoBehaviour:
   _rightSwipeDetector: {fileID: 1165907184}
   _leftSwipeDetector: {fileID: 742141158}
   _tapDetector: {fileID: 849214772}
+  _selectableLayer:
+    _layerIndex: 8
 --- !u!1 &1332434245
 GameObject:
   m_ObjectHideFlags: 0

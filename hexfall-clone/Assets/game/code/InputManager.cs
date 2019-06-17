@@ -1,4 +1,5 @@
 ﻿using System;
+using Eflatun.UnityCommon.Inspector;
 using Lean.Touch;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private LeanFingerSwipe _rightSwipeDetector, _leftSwipeDetector;
     [SerializeField] private LeanFingerTap _tapDetector;
+
+    [SerializeField] private LayerWrapper _selectableLayer;
 
     private void Start()
     {
@@ -51,6 +54,9 @@ public class InputManager : MonoBehaviour
                   $"| {nameof(screenPos)} = {screenPos} " +
                   $"| {nameof(worldPos)} = {worldPos}");
 
-        Tapped?.Invoke(worldPos);
+        if (Physics2D.OverlapPoint(worldPos, _selectableLayer.AsMask))
+        {
+            Tapped?.Invoke(worldPos);
+        }
     }
 }
