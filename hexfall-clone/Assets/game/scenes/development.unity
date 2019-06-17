@@ -195,7 +195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _columnCount: 8
   _rowCount: 9
-  _size: 0.5
+  _size: 0.4
 --- !u!4 &290725758
 Transform:
   m_ObjectHideFlags: 0
@@ -1122,11 +1122,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: group highlighter
-      objectReference: {fileID: 0}
-    - target: {fileID: 5717308132227368872, guid: 2a3741717dd34d94da72fad2fdabc304,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4573241383428437580, guid: 2a3741717dd34d94da72fad2fdabc304,
         type: 3}
