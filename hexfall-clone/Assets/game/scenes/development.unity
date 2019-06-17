@@ -193,8 +193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4a66fdca106a294fa2d088055b83a0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _columnCount: 3
-  _rowCount: 3
+  _columnCount: 8
+  _rowCount: 9
   _size: 0.5
 --- !u!4 &290725758
 Transform:
@@ -526,7 +526,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.11764706, g: 0.11764706, b: 0.11764706, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -866,10 +866,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _colours:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 1, g: 0, b: 1, a: 1}
+  - {r: 1, g: 0.09803922, b: 0.09803922, a: 1}
+  - {r: 0.09803922, g: 1, b: 0.09803922, a: 1}
+  - {r: 0.09803922, g: 0.09803922, b: 1, a: 1}
+  - {r: 1, g: 0.09803922, b: 1, a: 1}
+  - {r: 1, g: 1, b: 0.09803922, a: 1}
 --- !u!114 &1489966773
 MonoBehaviour:
   m_ObjectHideFlags: 0
