@@ -24,6 +24,7 @@ namespace starikcetin.hexfallClone
         /// <summary>
         /// Checks if <paramref name="hexagonGroup"/> contains <paramref name="foundColor"/>.
         /// </summary>
+        // TODO: rename foundColor -> color
         public static int CountForColor(HexagonGroup hexagonGroup, Color foundColor)
         {
             int count = 0;

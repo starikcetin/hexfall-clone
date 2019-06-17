@@ -28,5 +28,10 @@ namespace starikcetin.hexfallClone
                 return (Alpha.ToUnity(size) + Bravo.ToUnity(size) + Charlie.ToUnity(size)) / 3f;
             }
         }
+
+        public bool Has(OffsetCoordinates coords)
+        {
+            return Alpha == coords || Bravo == coords || Charlie == coords;
+        }
     }
 }

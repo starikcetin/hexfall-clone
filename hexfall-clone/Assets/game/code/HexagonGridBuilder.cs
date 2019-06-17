@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Eflatun.UnityCommon.Utils.CodePatterns;
 using UnityEngine;
 
@@ -149,10 +150,22 @@ namespace starikcetin.hexfallClone
             return new Vector2(totalWidth / 2, totalHeight / 2);
         }
 
-        private Color GetMeAForbiddenColorGoddamit(OffsetCoordinates coords)
+        private IEnumerable<Color> GetForbiddenColors(OffsetCoordinates coords)
         {
             // it is enough for this guy to be different than just one of the members of the groups he belongs in.
             // that means there can't be any 3 groups.
+
+            var groups = GetGroups(coords);
+
+            foreach (var group in groups)
+            {
+                var (alphaColor, bravoColor, charlieColor) = Utils.GetColors(group);
+            }
+        }
+
+        private IEnumerable<HexagonGroup> GetGroups(OffsetCoordinates coords)
+        {
+            return HexagonGroupDatabase.Instance.HexagonGroups.Where(g => g.Has(coords));
         }
     }
 }
