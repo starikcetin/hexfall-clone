@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Eflatun.UnityCommon.Utils.CodePatterns;
 using UnityEngine;
@@ -39,13 +40,13 @@ namespace starikcetin.hexfallClone
         {
             //yield return null;
 
-            HexagonDatabase.Instance.HexagonGrid = BuildHexagonGrid(_size);
-
             foreach (var hexagonGroup in AssembleHexagonGroups())
             {
                 HexagonGroupDatabase.Instance.RegisterHexagonGroup(hexagonGroup);
                 //yield return null;
             }
+
+            HexagonDatabase.Instance.HexagonGrid = BuildHexagonGrid(_size);
 
             yield return 0;
         }
@@ -128,7 +129,9 @@ namespace starikcetin.hexfallClone
 
             var newHexagon = Instantiate(prefab, transform);
             newHexagon.transform.position = offsetCoordinates.ToUnity(size) - GameParamsDatabase.Instance.CenterOffset;
-            var colour = ColourDatabase.Instance.RandomColour();
+
+            var colour = ColourDatabase.Instance.RandomColour(new Color());
+
             newHexagon.GetComponent<Hexagon>().SetColor(colour);
             return newHexagon;
         }
@@ -144,6 +147,12 @@ namespace starikcetin.hexfallClone
             }
 
             return new Vector2(totalWidth / 2, totalHeight / 2);
+        }
+
+        private Color GetMeAForbiddenColorGoddamit(OffsetCoordinates coords)
+        {
+            // it is enough for this guy to be different than just one of the members of the groups he belongs in.
+            // that means there can't be any 3 groups.
         }
     }
 }
