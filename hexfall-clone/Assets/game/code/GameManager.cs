@@ -9,6 +9,8 @@ public class GameManager : SceneSingleton<GameManager>
 {
     public event Action ActionSequenceCompleted;
 
+    [SerializeField] private GroupHighlighter _groupHighlighter;
+
     private bool _isSelectionActive = false;
 
     private HexagonGroup _selectedGroup;
@@ -54,6 +56,8 @@ public class GameManager : SceneSingleton<GameManager>
         Destroy(_highlightGameObject);
         _highlightGameObject =
             Utils._Debug_Highlight((Vector3) _selectedGroup.Center - new Vector3(0, 0, 1), Color.green);
+
+        _groupHighlighter.Highlight(group);
     }
 
     private void InputManagerOnSwiped(SwipeDirection swipeDirection)
