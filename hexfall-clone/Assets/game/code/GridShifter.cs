@@ -93,7 +93,7 @@ public class GridShifter : MonoBehaviour
 
     private static IEnumerator Shift(int col, int row, int shiftCount, GameObject hex, Action callback)
     {
-        Debug.Log($"{nameof(GridShifter)}.{nameof(Shift)}: shifting... " +
+        Utils.LogConditional($"{nameof(GridShifter)}.{nameof(Shift)}: shifting... " +
                   $"pos: [{col}, {row}] shiftCount: {shiftCount} {nameof(hex)}: {hex}");
 
         // data shift can be instant, nothing will/should interfere

@@ -1,6 +1,7 @@
 ﻿using System;
 using Eflatun.UnityCommon.Inspector;
 using Lean.Touch;
+using starikcetin.hexfallClone;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -33,14 +34,14 @@ public class InputManager : MonoBehaviour
 
     private void OnRightSwipe(LeanFinger finger)
     {
-        Debug.Log(nameof(InputManager) + " right swipe");
+        Utils.LogConditional(nameof(InputManager) + " right swipe");
 
         Swiped?.Invoke(SwipeDirection.Right);
     }
 
     private void OnLeftSwipe(LeanFinger finger)
     {
-        Debug.Log(nameof(InputManager) + " left swipe");
+        Utils.LogConditional(nameof(InputManager) + " left swipe");
 
         Swiped?.Invoke(SwipeDirection.Left);
     }
@@ -50,7 +51,7 @@ public class InputManager : MonoBehaviour
         var screenPos = finger.ScreenPosition;
         var worldPos = finger.GetWorldPosition(10, Camera.current);
 
-        Debug.Log($"{nameof(InputManager)} + tap " +
+        Utils.LogConditional($"{nameof(InputManager)} + tap " +
                   $"| {nameof(screenPos)} = {screenPos} " +
                   $"| {nameof(worldPos)} = {worldPos}");
 
