@@ -1,4 +1,5 @@
 ﻿using Eflatun.UnityCommon.Utils.CodePatterns;
+using starikcetin.hexfallClone;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,8 +10,7 @@ public class GameOverHandler : SceneSingleton<GameOverHandler>
 
     public void DeclareGameOver()
     {
-        // TODO
-        Debug.Log("----- Game Over -----");
+        Utils.LogConditional("----- Game Over -----");
 
         SceneManager.LoadScene(_gameOverScene.ScenePath);
     }

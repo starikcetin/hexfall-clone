@@ -38,18 +38,18 @@ public class GameManager : SceneSingleton<GameManager>
 
     private void InputManagerOnTapped(Vector3 worldPosition)
     {
-        Debug.Log($"{nameof(GameManager)}: {nameof(InputManagerOnTapped)}({nameof(worldPosition)}: {worldPosition})");
+        Utils.LogConditional($"{nameof(GameManager)}: {nameof(InputManagerOnTapped)}({nameof(worldPosition)}: {worldPosition})");
 
         var closestGroup =
             HexagonGroupDatabase.Instance.FindClosestGroup(worldPosition, GameParamsDatabase.Instance.Size);
-        Debug.Log("Center of closest group: " + closestGroup.Center);
+        Utils.LogConditional("Center of closest group: " + closestGroup.Center);
 
         SelectGroup(closestGroup);
     }
 
     private void SelectGroup(HexagonGroup group)
     {
-        Debug.Log($"{nameof(GameManager)}: {nameof(SelectGroup)}({nameof(group)}: {group.Center})");
+        Utils.LogConditional($"{nameof(GameManager)}: {nameof(SelectGroup)}({nameof(group)}: {group.Center})");
         _selectedGroup = group;
         _isSelectionActive = true;
 
@@ -62,11 +62,11 @@ public class GameManager : SceneSingleton<GameManager>
 
     private void InputManagerOnSwiped(SwipeDirection swipeDirection)
     {
-        Debug.Log($"{nameof(GameManager)}: {nameof(InputManagerOnSwiped)}({nameof(swipeDirection)}: {swipeDirection})");
+        Utils.LogConditional($"{nameof(GameManager)}: {nameof(InputManagerOnSwiped)}({nameof(swipeDirection)}: {swipeDirection})");
 
         if (!_isSelectionActive)
         {
-            Debug.Log($"{nameof(GameManager)}.{nameof(InputManagerOnSwiped)}: no active selection, ignoring swipe.");
+            Utils.LogConditional($"{nameof(GameManager)}.{nameof(InputManagerOnSwiped)}: no active selection, ignoring swipe.");
             return;
         }
 
@@ -109,7 +109,7 @@ public class GameManager : SceneSingleton<GameManager>
 
             if (_matchFound)
             {
-                Debug.Log(
+                Utils.LogConditional(
                     $"{nameof(GameManager)}.{nameof(RotateSequence)}: match found! breaking the rotation sequence.");
 
                 ActionSequenceCompleted?.Invoke();

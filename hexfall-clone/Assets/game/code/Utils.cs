@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace starikcetin.hexfallClone
 {
@@ -56,6 +58,12 @@ namespace starikcetin.hexfallClone
             var cc = c.Color;
 
             return ac == bc && bc == cc && ac == cc;
+        }
+
+        [Conditional("DEBUG_LOGS")]
+        public static void LogConditional(string str)
+        {
+            Debug.Log(str);
         }
     }
 }

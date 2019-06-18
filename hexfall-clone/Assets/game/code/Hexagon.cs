@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using Lean.Transition;
 using UnityEngine;
 
@@ -33,7 +34,9 @@ namespace starikcetin.hexfallClone
 
         public IEnumerator MoveTo(Vector3 target, float time)
         {
-            transform.positionTransition(target, time);
+            GetComponent<Rigidbody2D>().DOMove(target, time);
+
+            //transform.positionTransition(target, time);
             yield return new WaitForSeconds(time);
         }
     }
