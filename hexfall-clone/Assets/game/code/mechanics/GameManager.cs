@@ -47,7 +47,8 @@ namespace starikcetin.hexfallClone.game.mechanics
                 return;
             }
 
-            Utils.LogConditional($"{nameof(GameManager)}: {nameof(InputManagerOnTapped)}({nameof(worldPosition)}: {worldPosition})");
+            Utils.LogConditional(
+                $"{nameof(GameManager)}: {nameof(InputManagerOnTapped)}({nameof(worldPosition)}: {worldPosition})");
 
             var closestGroup =
                 GroupDatabase.Instance.FindClosestGroup(worldPosition, GameParamsDatabase.Instance.Size);

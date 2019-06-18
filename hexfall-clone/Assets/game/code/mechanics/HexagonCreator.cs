@@ -30,9 +30,9 @@ namespace starikcetin.hexfallClone.game.mechanics
         {
             if (performColorCheck)
             {
-                var checkA = new OffsetCoordinates(offsetCoordinates.Col-1, offsetCoordinates.Row);
-                var checkB = new OffsetCoordinates(offsetCoordinates.Col-1, offsetCoordinates.Row-1);
-                var checkC = new OffsetCoordinates(offsetCoordinates.Col, offsetCoordinates.Row-1);
+                var checkA = new OffsetCoordinates(offsetCoordinates.Col - 1, offsetCoordinates.Row);
+                var checkB = new OffsetCoordinates(offsetCoordinates.Col - 1, offsetCoordinates.Row - 1);
+                var checkC = new OffsetCoordinates(offsetCoordinates.Col, offsetCoordinates.Row - 1);
 
                 var colA = HexagonDatabase.Instance[checkA].GetComponent<Hexagon>().Color;
                 var colB = HexagonDatabase.Instance[checkB].GetComponent<Hexagon>().Color;

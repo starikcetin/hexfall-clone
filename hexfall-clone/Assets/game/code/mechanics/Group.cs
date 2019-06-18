@@ -18,7 +18,8 @@ namespace starikcetin.hexfallClone.game.mechanics
 
         public GroupOrientation Orientation { get; }
 
-        public Group(OffsetCoordinates alpha, OffsetCoordinates bravo, OffsetCoordinates charlie, GroupOrientation orientation)
+        public Group(OffsetCoordinates alpha, OffsetCoordinates bravo, OffsetCoordinates charlie,
+            GroupOrientation orientation)
         {
             Alpha = alpha;
             Bravo = bravo;
