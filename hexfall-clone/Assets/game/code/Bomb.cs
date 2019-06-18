@@ -13,15 +13,15 @@ public class Bomb : MonoBehaviour
     private void Start()
     {
         LivesLeft = GameParamsDatabase.Instance.BombLife;
-        GameManager.Instance.ActionDone += InstanceOnActionDone;
+        GameManager.Instance.ActionSequenceCompleted += InstanceOnActionSequenceCompleted;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.ActionDone -= InstanceOnActionDone;
+        GameManager.Instance.ActionSequenceCompleted -= InstanceOnActionSequenceCompleted;
     }
 
-    private void InstanceOnActionDone()
+    private void InstanceOnActionSequenceCompleted()
     {
         LivesLeft--;
         

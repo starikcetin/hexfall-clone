@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using DG.Tweening;
 using Lean.Transition;
 using UnityEngine;
 
@@ -21,14 +23,21 @@ namespace starikcetin.hexfallClone
 
             transform.localScaleTransition(targetScale, 0.5f)
                 .JoinTransition()
-                .EventTransition(() => Destroy(gameObject), 0f);
+                .EventTransition(() =>
+                {
+                    if (gameObject)
+                    {
+                        Destroy(gameObject);
+                    }
+                }, 0f);
         }
 
-        public void MoveAndCallback(Vector3 target, float time, Action callback)
+        public IEnumerator MoveTo(Vector3 target, float time)
         {
-            transform.positionTransition(target, time)
-                .JoinTransition()
-                .EventTransition(callback, 0f);
+            GetComponent<Rigidbody2D>().DOMove(target, time);
+
+            //transform.positionTransition(target, time);
+            yield return new WaitForSeconds(time);
         }
     }
 }

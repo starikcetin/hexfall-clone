@@ -13,11 +13,14 @@ namespace starikcetin.hexfallClone
         public OffsetCoordinates Bravo { get; }
         public OffsetCoordinates Charlie { get; }
 
-        public HexagonGroup(OffsetCoordinates alpha, OffsetCoordinates bravo, OffsetCoordinates charlie)
+        public GroupOrientation Orientation { get; }
+
+        public HexagonGroup(OffsetCoordinates alpha, OffsetCoordinates bravo, OffsetCoordinates charlie, GroupOrientation orientation)
         {
             Alpha = alpha;
             Bravo = bravo;
             Charlie = charlie;
+            Orientation = orientation;
         }
 
         public Vector2 Center

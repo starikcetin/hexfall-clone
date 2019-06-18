@@ -7,8 +7,9 @@ using UnityEngine;
 
 public class GameManager : SceneSingleton<GameManager>
 {
-    // TODO: rename for ActionSequenceCompleted?
-    public event Action ActionDone;
+    public event Action ActionSequenceCompleted;
+
+    [SerializeField] private GroupHighlighter _groupHighlighter;
 
     private bool _isSelectionActive = false;
 
@@ -17,6 +18,7 @@ public class GameManager : SceneSingleton<GameManager>
 
     private readonly Queue<HexagonGroup> _matches = new Queue<HexagonGroup>();
     private InputManager _inputManager;
+    private bool _matchFound;
 
     private void Start()
     {
@@ -36,33 +38,35 @@ public class GameManager : SceneSingleton<GameManager>
 
     private void InputManagerOnTapped(Vector3 worldPosition)
     {
-        Debug.Log($"{nameof(GameManager)}: {nameof(InputManagerOnTapped)}({nameof(worldPosition)}: {worldPosition})");
+        Utils.LogConditional($"{nameof(GameManager)}: {nameof(InputManagerOnTapped)}({nameof(worldPosition)}: {worldPosition})");
 
         var closestGroup =
             HexagonGroupDatabase.Instance.FindClosestGroup(worldPosition, GameParamsDatabase.Instance.Size);
-        Debug.Log("Center of closest group: " + closestGroup.Center);
+        Utils.LogConditional("Center of closest group: " + closestGroup.Center);
 
         SelectGroup(closestGroup);
     }
 
     private void SelectGroup(HexagonGroup group)
     {
-        Debug.Log($"{nameof(GameManager)}: {nameof(SelectGroup)}({nameof(group)}: {group.Center})");
+        Utils.LogConditional($"{nameof(GameManager)}: {nameof(SelectGroup)}({nameof(group)}: {group.Center})");
         _selectedGroup = group;
         _isSelectionActive = true;
 
         Destroy(_highlightGameObject);
         _highlightGameObject =
             Utils._Debug_Highlight((Vector3) _selectedGroup.Center - new Vector3(0, 0, 1), Color.green);
+
+        _groupHighlighter.Highlight(group);
     }
 
     private void InputManagerOnSwiped(SwipeDirection swipeDirection)
     {
-        Debug.Log($"{nameof(GameManager)}: {nameof(InputManagerOnSwiped)}({nameof(swipeDirection)}: {swipeDirection})");
+        Utils.LogConditional($"{nameof(GameManager)}: {nameof(InputManagerOnSwiped)}({nameof(swipeDirection)}: {swipeDirection})");
 
         if (!_isSelectionActive)
         {
-            Debug.Log($"{nameof(GameManager)}.{nameof(InputManagerOnSwiped)}: no active selection, ignoring swipe.");
+            Utils.LogConditional($"{nameof(GameManager)}.{nameof(InputManagerOnSwiped)}: no active selection, ignoring swipe.");
             return;
         }
 
@@ -79,103 +83,100 @@ public class GameManager : SceneSingleton<GameManager>
             default:
                 throw new ArgumentOutOfRangeException(nameof(swipeDirection), swipeDirection, null);
         }
-
-        ActionDone?.Invoke();
     }
 
     private IEnumerator RotateSequence(RotationDirection direction)
     {
         for (int i = 0; i < 3; i++)
         {
-            bool calledBack = false;
-            var callback = new Action(() => calledBack = true);
-
             switch (direction)
             {
                 // rotate
                 case RotationDirection.Clockwise:
-                    RotateOnce_Clockwise(callback);
+                    yield return RotateOnce_Clockwise();
                     break;
 
                 case RotationDirection.CounterClockwise:
-                    RotateOnce_CounterClockwise(callback);
+                    yield return RotateOnce_CounterClockwise();
                     break;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
             }
 
-            // wait
-            while (!calledBack)
-            {
-                yield return null;
-            }
-
             // check for matches
-            var matchFound = CheckAndHandleMatches();
+            yield return CheckAndHandleMatches();
 
-            if (matchFound)
+            if (_matchFound)
             {
-                Debug.Log(
+                Utils.LogConditional(
                     $"{nameof(GameManager)}.{nameof(RotateSequence)}: match found! breaking the rotation sequence.");
+
+                ActionSequenceCompleted?.Invoke();
                 yield break;
             }
         }
+
+        ActionSequenceCompleted?.Invoke();
     }
 
-    private void RotateOnce_Clockwise(Action callback)
+    private IEnumerator RotateOnce_Clockwise()
     {
         var alphaHex = HexagonDatabase.Instance[_selectedGroup.Alpha];
         var bravoHex = HexagonDatabase.Instance[_selectedGroup.Bravo];
         var charlieHex = HexagonDatabase.Instance[_selectedGroup.Charlie];
 
         // Alpha Hex --> Bravo
-        Put(alphaHex, _selectedGroup.Bravo, callback);
+        StartCoroutine(Put(alphaHex, _selectedGroup.Bravo));
 
         // Bravo Hex --> Charlie
-        Put(bravoHex, _selectedGroup.Charlie, null);
+        StartCoroutine(Put(bravoHex, _selectedGroup.Charlie));
 
         // Charlie Hex --> Alpha
-        Put(charlieHex, _selectedGroup.Alpha, null);
+        yield return Put(charlieHex, _selectedGroup.Alpha);
+
+        // we only yield on one of them since they need to happen in parallel.
     }
 
-    private void RotateOnce_CounterClockwise(Action callback)
+    private IEnumerator RotateOnce_CounterClockwise()
     {
         var alphaHex = HexagonDatabase.Instance[_selectedGroup.Alpha];
         var bravoHex = HexagonDatabase.Instance[_selectedGroup.Bravo];
         var charlieHex = HexagonDatabase.Instance[_selectedGroup.Charlie];
 
         // Alpha Hex --> Charlie
-        Put(alphaHex, _selectedGroup.Charlie, callback);
+        StartCoroutine(Put(alphaHex, _selectedGroup.Charlie));
 
         // Charlie Hex --> Bravo
-        Put(charlieHex, _selectedGroup.Bravo, null);
+        StartCoroutine(Put(charlieHex, _selectedGroup.Bravo));
 
         // Bravo Hex --> Alpha
-        Put(bravoHex, _selectedGroup.Alpha, null);
+        yield return Put(bravoHex, _selectedGroup.Alpha);
+
+        // we only yield on one of them since they need to happen in parallel.
     }
 
-    private void Put(GameObject hex, OffsetCoordinates coords, Action callback)
+    private IEnumerator Put(GameObject hex, OffsetCoordinates coords)
     {
         // set in hexagon database
         HexagonDatabase.Instance[coords] = hex;
 
-        // sync the position of the GameObject TODO: we might move this to a Hexagon class.
-        //hex.transform.position = coords.ToUnity(GameParamsDatabase.Instance.Size);
-        hex.GetComponent<Hexagon>().MoveAndCallback(coords.ToUnity(GameParamsDatabase.Instance.Size), 0.25f, callback);
+        // sync the position of the GameObject
+        yield return
+            hex.GetComponent<Hexagon>().MoveTo(coords.ToUnity(GameParamsDatabase.Instance.Size), 0.25f);
     }
 
-    private bool CheckAndHandleMatches()
+    private IEnumerator CheckAndHandleMatches()
     {
-        bool matchFound = RecordAllMatches();
+        _matchFound = RecordAllMatches();
 
-        if (matchFound)
+        if (_matchFound)
         {
             HandleAllMatches();
-            RequestShift();
+            yield return RequestShift();
+            yield return CheckAndHandleMatches();
+            _matchFound = true;
         }
-
-        return matchFound;
     }
 
     private void HandleAllMatches()
@@ -227,9 +228,9 @@ public class GameManager : SceneSingleton<GameManager>
         _matches.Enqueue(group);
     }
 
-    private void RequestShift()
+    private IEnumerator RequestShift()
     {
-        GetComponent<GridShifter>().ShiftAll(() => CheckAndHandleMatches());
+        yield return GetComponent<GridShifter>().ShiftAndRefillAll();
     }
 
     private bool CheckForMatch(HexagonGroup group)

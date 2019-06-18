@@ -13,8 +13,8 @@ public class HexagonGroupDatabase : SceneSingleton<HexagonGroupDatabase>
     {
         _hexagonGroups.Add(group);
 
-        var highlighter = Utils._Debug_Highlight(group.Center, Color.black);
-        highlighter.name = "debug_group_highlighter";
+//        var highlighter = Utils._Debug_Highlight(group.Center, Color.black);
+//        highlighter.name = "debug_group_highlighter";
     }
 
     public HexagonGroup FindClosestGroup(Vector2 point, float size)

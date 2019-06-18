@@ -27,27 +27,17 @@ namespace starikcetin.hexfallClone
         {
             // Write Game Params
             GameParamsDatabase.Instance.Size = _size;
-            GameParamsDatabase.Instance.CenterOffset = Vector2.zero; //CalculateCenterOffset(size, _columnCount, _rowCount);
+            GameParamsDatabase.Instance.CenterOffset = CalculateCenterOffset(_size, _columnCount, _rowCount);
         }
 
         private void Start()
         {
-            StartCoroutine(AfterStart());
-        }
-
-        IEnumerator AfterStart()
-        {
-            //yield return null;
-
             HexagonDatabase.Instance.HexagonGrid = BuildHexagonGrid(_size);
 
             foreach (var hexagonGroup in AssembleHexagonGroups())
             {
                 HexagonGroupDatabase.Instance.RegisterHexagonGroup(hexagonGroup);
-                //yield return null;
             }
-
-            yield return 0;
         }
 
         private IEnumerable<HexagonGroup> AssembleHexagonGroups()
@@ -61,7 +51,7 @@ namespace starikcetin.hexfallClone
                 var bravo = new OffsetCoordinates(col + 1, row + 1);
                 var charlie = new OffsetCoordinates(col + 1, row);
 
-                yield return new HexagonGroup(alpha, bravo, charlie);
+                yield return new HexagonGroup(alpha, bravo, charlie, GroupOrientation.TwoRight);
             }
 
             // 2-left even (b)
@@ -73,7 +63,7 @@ namespace starikcetin.hexfallClone
                 var bravo = new OffsetCoordinates(col, row + 1);
                 var charlie = new OffsetCoordinates(col + 1, row + 1);
 
-                yield return new HexagonGroup(alpha, bravo, charlie);
+                yield return new HexagonGroup(alpha, bravo, charlie, GroupOrientation.TwoLeft);
             }
 
             // 2-right odd (c)
@@ -85,7 +75,7 @@ namespace starikcetin.hexfallClone
                 var bravo = new OffsetCoordinates(col + 1, row);
                 var charlie = new OffsetCoordinates(col + 1, row - 1);
 
-                yield return new HexagonGroup(alpha, bravo, charlie);
+                yield return new HexagonGroup(alpha, bravo, charlie, GroupOrientation.TwoRight);
             }
 
             // 2-left odd (d)
@@ -97,7 +87,7 @@ namespace starikcetin.hexfallClone
                 var bravo = new OffsetCoordinates(col, row + 1);
                 var charlie = new OffsetCoordinates(col + 1, row);
 
-                yield return new HexagonGroup(alpha, bravo, charlie);
+                yield return new HexagonGroup(alpha, bravo, charlie, GroupOrientation.TwoLeft);
             }
         }
 
@@ -127,7 +117,7 @@ namespace starikcetin.hexfallClone
             var prefab = isBomb ? PrefabDatabase.Instance.BombHexagon : PrefabDatabase.Instance.Hexagon;
 
             var newHexagon = Instantiate(prefab, transform);
-            newHexagon.transform.position = offsetCoordinates.ToUnity(size) - GameParamsDatabase.Instance.CenterOffset;
+            newHexagon.transform.position = offsetCoordinates.ToUnity(size);
             var colour = ColourDatabase.Instance.RandomColour();
             newHexagon.GetComponent<Hexagon>().SetColor(colour);
             return newHexagon;
