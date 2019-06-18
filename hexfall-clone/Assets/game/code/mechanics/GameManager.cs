@@ -18,7 +18,7 @@ namespace starikcetin.hexfallClone.game.mechanics
         private bool _isSelectionActive = false;
 
         public Group SelectedGroup { get; private set; }
-        private GameObject _highlightGameObject;
+//        private GameObject _highlightGameObject;
 
         private InputManager _inputManager;
         private RotationSequenceHandler _rotationSequenceHandler;
@@ -63,9 +63,9 @@ namespace starikcetin.hexfallClone.game.mechanics
             SelectedGroup = group;
             _isSelectionActive = true;
 
-            Destroy(_highlightGameObject);
-            _highlightGameObject =
-                Utils._Debug_Highlight((Vector3) SelectedGroup.Center - new Vector3(0, 0, 1), Color.green);
+//            Destroy(_highlightGameObject);
+//            _highlightGameObject =
+//                Utils._Debug_Highlight((Vector3) SelectedGroup.Center - new Vector3(0, 0, 1), Color.green);
 
             _groupHighlighter.Highlight(group);
         }
