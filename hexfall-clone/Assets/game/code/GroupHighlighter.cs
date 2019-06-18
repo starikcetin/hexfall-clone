@@ -4,7 +4,7 @@ namespace starikcetin.hexfallClone.game
 {
     public class GroupHighlighter : MonoBehaviour
     {
-        public void Highlight(HexagonGroup group)
+        public void Highlight(Group group)
         {
             gameObject.SetActive(true);
             transform.position = group.Center;

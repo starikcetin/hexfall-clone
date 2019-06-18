@@ -35,7 +35,7 @@ namespace starikcetin.hexfallClone.game
             // 1. 2 red must be connected (pair).
             // 2. A 3rd red must exist in the groups neighboring the group that contains the third hexagon of 2 red pair.
 
-            foreach (var group in HexagonGroupDatabase.Instance.HexagonGroups)
+            foreach (var group in GroupDatabase.Instance.Groups)
             {
                 if (HasTwoColourPair(group, out var pairSpots, out var thirdSpot, out var foundColor))
                 {
@@ -71,7 +71,7 @@ namespace starikcetin.hexfallClone.game
         /// <param name="pairSpots">The spots where the color pair is located. (null if method returns false)</param>
         /// <param name="thirdSpot">The third commonSpot, i.e. the commonSpot that has a different color. (Charlie if method returns false)</param>
         /// <param name="foundColor">The colour that exists 2 times in this group. (Color.Clear if method returns false)</param>
-        private bool HasTwoColourPair(HexagonGroup group, out OffsetCoordinates[] pairSpots,
+        private bool HasTwoColourPair(Group group, out OffsetCoordinates[] pairSpots,
             out OffsetCoordinates thirdSpot, out Color foundColor)
         {
             var (ac, bc, cc) = Utils.GetColors(group);
@@ -111,13 +111,13 @@ namespace starikcetin.hexfallClone.game
         /// Direct neighbors: neighbors that share 1 spot from <paramref name="otherSpots"/> along with the <paramref name="commonSpot"/>.
         /// Indirect neighbors: neighbors that share only the <paramref name="commonSpot"/>.
         /// </summary>
-        private static (List<HexagonGroup> indirectNeighbors, List<HexagonGroup> directNeighbors)
+        private static (List<Group> indirectNeighbors, List<Group> directNeighbors)
             FindNeighbors(OffsetCoordinates commonSpot, OffsetCoordinates[] otherSpots)
         {
-            var indirectNeighbors = new List<HexagonGroup>();
-            var directNeighbors = new List<HexagonGroup>();
+            var indirectNeighbors = new List<Group>();
+            var directNeighbors = new List<Group>();
 
-            foreach (var g in HexagonGroupDatabase.Instance.HexagonGroups)
+            foreach (var g in GroupDatabase.Instance.Groups)
             {
                 if (Utils.Contains(g, commonSpot))
                 {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace starikcetin.hexfallClone.game
 {
-    public class HexagonGridBuilder : MonoBehaviour
+    public class GridBuilder : MonoBehaviour
     {
         [SerializeField] private int _columnCount, _rowCount;
         [SerializeField] private float _size;
@@ -34,11 +34,11 @@ namespace starikcetin.hexfallClone.game
 
             foreach (var hexagonGroup in AssembleHexagonGroups())
             {
-                HexagonGroupDatabase.Instance.RegisterHexagonGroup(hexagonGroup);
+                GroupDatabase.Instance.RegisterGroup(hexagonGroup);
             }
         }
 
-        private IEnumerable<HexagonGroup> AssembleHexagonGroups()
+        private IEnumerable<Group> AssembleHexagonGroups()
         {
             // 2-right even (a)
 
@@ -49,7 +49,7 @@ namespace starikcetin.hexfallClone.game
                 var bravo = new OffsetCoordinates(col + 1, row + 1);
                 var charlie = new OffsetCoordinates(col + 1, row);
 
-                yield return new HexagonGroup(alpha, bravo, charlie, GroupOrientation.TwoRight);
+                yield return new Group(alpha, bravo, charlie, GroupOrientation.TwoRight);
             }
 
             // 2-left even (b)
@@ -61,7 +61,7 @@ namespace starikcetin.hexfallClone.game
                 var bravo = new OffsetCoordinates(col, row + 1);
                 var charlie = new OffsetCoordinates(col + 1, row + 1);
 
-                yield return new HexagonGroup(alpha, bravo, charlie, GroupOrientation.TwoLeft);
+                yield return new Group(alpha, bravo, charlie, GroupOrientation.TwoLeft);
             }
 
             // 2-right odd (c)
@@ -73,7 +73,7 @@ namespace starikcetin.hexfallClone.game
                 var bravo = new OffsetCoordinates(col + 1, row);
                 var charlie = new OffsetCoordinates(col + 1, row - 1);
 
-                yield return new HexagonGroup(alpha, bravo, charlie, GroupOrientation.TwoRight);
+                yield return new Group(alpha, bravo, charlie, GroupOrientation.TwoRight);
             }
 
             // 2-left odd (d)
@@ -85,7 +85,7 @@ namespace starikcetin.hexfallClone.game
                 var bravo = new OffsetCoordinates(col, row + 1);
                 var charlie = new OffsetCoordinates(col + 1, row);
 
-                yield return new HexagonGroup(alpha, bravo, charlie, GroupOrientation.TwoLeft);
+                yield return new Group(alpha, bravo, charlie, GroupOrientation.TwoLeft);
             }
         }
 
@@ -106,7 +106,7 @@ namespace starikcetin.hexfallClone.game
 
             return grid;
         }
-        
+
         private Vector2 CalculateCenterOffset(float size, int colCount, int rowCount)
         {
             var totalWidth = HexHorizontalDistance * (colCount - 1);

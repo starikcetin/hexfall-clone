@@ -18,7 +18,7 @@ namespace starikcetin.hexfallClone.game
             set => HexagonGrid[offsetCoordinates.Col, offsetCoordinates.Row] = value;
         }
 
-        public (GameObject alpha, GameObject bravo, GameObject charlie) this[HexagonGroup group] =>
+        public (GameObject alpha, GameObject bravo, GameObject charlie) this[Group group] =>
         (
             this[group.Alpha],
             this[group.Bravo],

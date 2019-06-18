@@ -14,7 +14,7 @@ namespace starikcetin.hexfallClone.game
 
         private bool _isSelectionActive = false;
 
-        public HexagonGroup SelectedGroup { get; private set; }
+        public Group SelectedGroup { get; private set; }
         private GameObject _highlightGameObject;
 
         private InputManager _inputManager;
@@ -48,13 +48,13 @@ namespace starikcetin.hexfallClone.game
             Utils.LogConditional($"{nameof(GameManager)}: {nameof(InputManagerOnTapped)}({nameof(worldPosition)}: {worldPosition})");
 
             var closestGroup =
-                HexagonGroupDatabase.Instance.FindClosestGroup(worldPosition, GameParamsDatabase.Instance.Size);
+                GroupDatabase.Instance.FindClosestGroup(worldPosition, GameParamsDatabase.Instance.Size);
             Utils.LogConditional("Center of closest group: " + closestGroup.Center);
 
             SelectGroup(closestGroup);
         }
 
-        private void SelectGroup(HexagonGroup group)
+        private void SelectGroup(Group group)
         {
             Utils.LogConditional($"{nameof(GameManager)}: {nameof(SelectGroup)}({nameof(group)}: {group.Center})");
             SelectedGroup = group;

@@ -3,11 +3,12 @@ using UnityEngine;
 namespace starikcetin.hexfallClone.game
 {
     /// <summary>
+    /// Represents a group of 3 hexagons (all 3 share a common corner).
     /// Alpha > Bravo > Charlie.
     /// Clockwise.
     /// Alpha is always the bottom-left (the minimum).
     /// </summary>
-    public struct HexagonGroup
+    public struct Group
     {
         public OffsetCoordinates Alpha { get; }
         public OffsetCoordinates Bravo { get; }
@@ -15,7 +16,7 @@ namespace starikcetin.hexfallClone.game
 
         public GroupOrientation Orientation { get; }
 
-        public HexagonGroup(OffsetCoordinates alpha, OffsetCoordinates bravo, OffsetCoordinates charlie, GroupOrientation orientation)
+        public Group(OffsetCoordinates alpha, OffsetCoordinates bravo, OffsetCoordinates charlie, GroupOrientation orientation)
         {
             Alpha = alpha;
             Bravo = bravo;

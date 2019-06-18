@@ -7,7 +7,7 @@ namespace starikcetin.hexfallClone.game
     [RequireComponent(typeof(GridShifter))]
     public class MatchHandler : MonoBehaviour
     {
-        private readonly Queue<HexagonGroup> _matches = new Queue<HexagonGroup>();
+        private readonly Queue<Group> _matches = new Queue<Group>();
         private GridShifter _gridShifter;
 
         public bool MatchFound { get; private set; }
@@ -60,7 +60,7 @@ namespace starikcetin.hexfallClone.game
         {
             bool matchFound = false;
 
-            foreach (var group in HexagonGroupDatabase.Instance.HexagonGroups)
+            foreach (var group in GroupDatabase.Instance.Groups)
             {
                 var isMatch = CheckForMatch(group);
 
@@ -74,7 +74,7 @@ namespace starikcetin.hexfallClone.game
             return matchFound;
         }
 
-        private void RecordMatch(HexagonGroup group)
+        private void RecordMatch(Group group)
         {
             _matches.Enqueue(group);
         }
@@ -84,7 +84,7 @@ namespace starikcetin.hexfallClone.game
             yield return _gridShifter.ShiftAndRefillAll();
         }
 
-        private bool CheckForMatch(HexagonGroup group)
+        private bool CheckForMatch(Group group)
         {
             var (alpha, bravo, charlie) = HexagonDatabase.Instance[group];
             return Utils.IsSameColor(

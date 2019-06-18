@@ -5,29 +5,29 @@ using UnityEngine;
 
 namespace starikcetin.hexfallClone.game
 {
-    public class HexagonGroupDatabase : SceneSingleton<HexagonGroupDatabase>
+    public class GroupDatabase : SceneSingleton<GroupDatabase>
     {
-        private readonly List<HexagonGroup> _hexagonGroups = new List<HexagonGroup>();
-        public IReadOnlyCollection<HexagonGroup> HexagonGroups => _hexagonGroups.AsReadOnly();
+        private readonly List<Group> _groups = new List<Group>();
+        public IReadOnlyCollection<Group> Groups => _groups.AsReadOnly();
 
-        public void RegisterHexagonGroup(HexagonGroup group)
+        public void RegisterGroup(Group group)
         {
-            _hexagonGroups.Add(group);
+            _groups.Add(group);
 
 //        var highlighter = Utils._Debug_Highlight(group.Center, Color.black);
 //        highlighter.name = "debug_group_highlighter";
         }
 
-        public HexagonGroup FindClosestGroup(Vector2 point, float size)
+        public Group FindClosestGroup(Vector2 point, float size)
         {
-            float Selector(HexagonGroup group)
+            float Selector(Group group)
             {
                 var groupCenter = group.Center;
                 float distance = Vector3.SqrMagnitude(point - groupCenter);
                 return distance;
             }
 
-            IExtremaEnumerable<HexagonGroup> mins = _hexagonGroups.MinBy(Selector);
+            IExtremaEnumerable<Group> mins = _groups.MinBy(Selector);
             var closestGroup = mins.First();
             return closestGroup;
         }
