@@ -24,7 +24,7 @@ namespace starikcetin.hexfallClone.game.mechanics
         {
             // 2-right even (a)
 
-            for (int col = 0; col < columnCount - 1; col+=2)
+            for (int col = 0; col < columnCount - 1; col += 2)
             for (int row = 0; row < rowCount - 1; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
@@ -36,7 +36,7 @@ namespace starikcetin.hexfallClone.game.mechanics
 
             // 2-left even (b)
 
-            for (int col = 0; col < columnCount - 1; col+=2)
+            for (int col = 0; col < columnCount - 1; col += 2)
             for (int row = 0; row < rowCount - 1; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
@@ -48,7 +48,7 @@ namespace starikcetin.hexfallClone.game.mechanics
 
             // 2-right odd (c)
 
-            for (int col = 1; col < columnCount - 1; col+=2)
+            for (int col = 1; col < columnCount - 1; col += 2)
             for (int row = 1; row < rowCount; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
@@ -60,7 +60,7 @@ namespace starikcetin.hexfallClone.game.mechanics
 
             // 2-left odd (d)
 
-            for (int col = 1; col < columnCount - 1; col+=2)
+            for (int col = 1; col < columnCount - 1; col += 2)
             for (int row = 0; row < rowCount - 1; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);

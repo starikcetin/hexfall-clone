@@ -32,6 +32,5 @@ namespace starikcetin.hexfallClone.game.databases
             var closestGroup = mins.First();
             return closestGroup;
         }
-
     }
 }

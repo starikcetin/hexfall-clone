@@ -16,7 +16,7 @@ namespace starikcetin.hexfallClone.game.databases
 
         private void Start()
         {
-            HexagonGrid = new GameObject[GameParamsDatabase.Instance.ColumnCount,GameParamsDatabase.Instance.RowCount];
+            HexagonGrid = new GameObject[GameParamsDatabase.Instance.ColumnCount, GameParamsDatabase.Instance.RowCount];
         }
 
         public GameObject this[OffsetCoordinates offsetCoordinates]
@@ -43,13 +43,13 @@ namespace starikcetin.hexfallClone.game.databases
         public static void Swap(int col, int rowA, int rowB)
         {
             // temp <- b
-            var temp = HexagonDatabase.Instance.HexagonGrid[col, rowB];
+            var temp = Instance.HexagonGrid[col, rowB];
 
             // b <- a
-            HexagonDatabase.Instance.HexagonGrid[col, rowB] = HexagonDatabase.Instance.HexagonGrid[col, rowA];
+            Instance.HexagonGrid[col, rowB] = Instance.HexagonGrid[col, rowA];
 
             // a <- temp
-            HexagonDatabase.Instance.HexagonGrid[col, rowA] = temp;
+            Instance.HexagonGrid[col, rowA] = temp;
         }
     }
 }

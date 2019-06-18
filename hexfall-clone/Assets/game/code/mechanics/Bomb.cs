@@ -27,7 +27,7 @@ namespace starikcetin.hexfallClone.game.mechanics
         private void InstanceOnActionSequenceCompleted()
         {
             LivesLeft--;
-        
+
             LifeChange?.Invoke(LivesLeft);
 
             if (LivesLeft <= 0)

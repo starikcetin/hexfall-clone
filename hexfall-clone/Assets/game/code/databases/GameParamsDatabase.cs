@@ -41,7 +41,6 @@ namespace starikcetin.hexfallClone.game.databases
 
         protected void Awake()
         {
-            // Write Game Params
             CenterOffset = CalculateCenterOffset(Size, ColumnCount, RowCount);
         }
 

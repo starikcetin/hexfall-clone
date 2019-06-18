@@ -16,7 +16,7 @@ namespace starikcetin.hexfallClone.game.visual
         {
             var zRot = orientation == GroupOrientation.TwoRight ? 0 : 180;
 
-            transform.rotation = Quaternion.AngleAxis(zRot, new Vector3(0,0,1));
+            transform.rotation = Quaternion.AngleAxis(zRot, new Vector3(0, 0, 1));
         }
     }
 }
