@@ -76,7 +76,7 @@ namespace starikcetin.hexfallClone.game.mechanics
         {
             var fillTarget = new OffsetCoordinates(col, row);
 
-            var hex = HexagonCreator.Instance.CreateHexagon(new OffsetCoordinates(col, refillSpawnRow), _shouldSpawnBomb);
+            var hex = HexagonCreator.Instance.CreateHexagon(new OffsetCoordinates(col, refillSpawnRow), _shouldSpawnBomb, false);
 
             if (_shouldSpawnBomb)
             {
