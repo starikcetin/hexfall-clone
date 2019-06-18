@@ -2,7 +2,7 @@
 using Eflatun.UnityCommon.Utils.CodePatterns;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.databases
 {
     public class ScoreDatabase : GlobalSingleton<ScoreDatabase>
     {
@@ -27,7 +27,7 @@ namespace starikcetin.hexfallClone.game
 
         public void ResetScore()
         {
-            Debug.Log(nameof(ResetScore));
+            Utils.LogConditional(nameof(ResetScore));
             Score = 0;
         }
     }

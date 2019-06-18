@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using starikcetin.hexfallClone.game.databases;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.mechanics
 {
     public class GameOverWatcher : MonoBehaviour
     {

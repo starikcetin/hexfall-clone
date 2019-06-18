@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using starikcetin.hexfallClone.game.databases;
+using starikcetin.hexfallClone.game.visual;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.mechanics
 {
     public class GridBuilder : MonoBehaviour
     {

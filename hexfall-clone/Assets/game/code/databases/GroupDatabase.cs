@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Eflatun.UnityCommon.Utils.CodePatterns;
 using MoreLinq;
+using starikcetin.hexfallClone.game.mechanics;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.databases
 {
     public class GroupDatabase : SceneSingleton<GroupDatabase>
     {

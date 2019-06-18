@@ -3,7 +3,7 @@ using DG.Tweening;
 using Lean.Transition;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.mechanics
 {
     public class Hexagon : MonoBehaviour
     {

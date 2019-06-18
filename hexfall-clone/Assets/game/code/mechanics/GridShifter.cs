@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
+using starikcetin.hexfallClone.game.databases;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.mechanics
 {
     public class GridShifter : MonoBehaviour
     {

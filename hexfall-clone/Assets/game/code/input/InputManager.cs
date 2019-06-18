@@ -3,7 +3,7 @@ using Eflatun.UnityCommon.Inspector;
 using Lean.Touch;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.input
 {
     public class InputManager : MonoBehaviour
     {

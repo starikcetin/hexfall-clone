@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.mechanics
 {
     [RequireComponent(typeof(TextMesh))]
     public class CountdownController : MonoBehaviour

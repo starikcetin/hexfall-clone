@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using starikcetin.hexfallClone.game.databases;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.ui
 {
     public class GameSceneUiManager : MonoBehaviour
     {

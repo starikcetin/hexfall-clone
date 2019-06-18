@@ -1,6 +1,8 @@
+using starikcetin.hexfallClone.game.databases;
+using starikcetin.hexfallClone.game.visual;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.mechanics
 {
     /// <summary>
     /// Represents a group of 3 hexagons (all 3 share a common corner).

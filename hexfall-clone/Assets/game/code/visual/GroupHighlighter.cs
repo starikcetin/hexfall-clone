@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using starikcetin.hexfallClone.game.mechanics;
+using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.visual
 {
     public class GroupHighlighter : MonoBehaviour
     {

@@ -1,7 +1,8 @@
 ﻿using System;
+using starikcetin.hexfallClone.game.databases;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.mechanics
 {
     public class Bomb : MonoBehaviour
     {

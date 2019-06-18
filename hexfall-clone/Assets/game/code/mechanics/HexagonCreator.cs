@@ -1,7 +1,8 @@
 ﻿using Eflatun.UnityCommon.Utils.CodePatterns;
+using starikcetin.hexfallClone.game.databases;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.mechanics
 {
     public class HexagonCreator : SceneSingleton<HexagonCreator>
     {

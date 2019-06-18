@@ -1,7 +1,7 @@
 ﻿using Eflatun.UnityCommon.Utils.CodePatterns;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.databases
 {
     public class PrefabDatabase : SceneSingleton<PrefabDatabase>
     {

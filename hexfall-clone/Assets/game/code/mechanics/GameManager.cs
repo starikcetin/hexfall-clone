@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using Eflatun.UnityCommon.Utils.CodePatterns;
+using starikcetin.hexfallClone.game.databases;
+using starikcetin.hexfallClone.game.input;
+using starikcetin.hexfallClone.game.visual;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone.game
+namespace starikcetin.hexfallClone.game.mechanics
 {
     [RequireComponent(typeof(RotationSequenceHandler))]
     public class GameManager : SceneSingleton<GameManager>
