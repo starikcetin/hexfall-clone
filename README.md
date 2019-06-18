@@ -3,6 +3,10 @@ My demo project for Vertigo Games.
 
 ## Notes
 
+Reference page for terminology and formulas: https://www.redblobgames.com/grids/hexagons/
+
+---
+
 Assets/Plugins contains three symlinks:
 
 * Eflatun.Expansions    
