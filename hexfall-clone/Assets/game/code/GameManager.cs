@@ -19,6 +19,7 @@ namespace starikcetin.hexfallClone.game
 
         private InputManager _inputManager;
         private RotationSequenceHandler _rotationSequenceHandler;
+        private bool _rotationSequenceActive;
 
         private void Start()
         {
@@ -39,6 +40,11 @@ namespace starikcetin.hexfallClone.game
 
         private void InputManagerOnTapped(Vector3 worldPosition)
         {
+            if (_rotationSequenceActive)
+            {
+                return;
+            }
+
             Utils.LogConditional($"{nameof(GameManager)}: {nameof(InputManagerOnTapped)}({nameof(worldPosition)}: {worldPosition})");
 
             var closestGroup =
@@ -63,6 +69,11 @@ namespace starikcetin.hexfallClone.game
 
         private void InputManagerOnSwiped(SwipeDirection swipeDirection)
         {
+            if (_rotationSequenceActive)
+            {
+                return;
+            }
+
             Utils.LogConditional($"{nameof(GameManager)}: {nameof(InputManagerOnSwiped)}({nameof(swipeDirection)}: {swipeDirection})");
 
             if (!_isSelectionActive)
@@ -76,6 +87,9 @@ namespace starikcetin.hexfallClone.game
 
         private IEnumerator RotationSequence(SwipeDirection swipeDirection)
         {
+            _rotationSequenceActive = true;
+            _groupHighlighter.gameObject.SetActive(false);
+
             switch (swipeDirection)
             {
                 case SwipeDirection.Right:
@@ -91,6 +105,8 @@ namespace starikcetin.hexfallClone.game
             }
 
             ActionSequenceCompleted?.Invoke();
+            _groupHighlighter.gameObject.SetActive(true);
+            _rotationSequenceActive = false;
         }
     }
 }

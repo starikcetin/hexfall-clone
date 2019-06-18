@@ -4,11 +4,6 @@ namespace starikcetin.hexfallClone.game
 {
     public class GroupHighlighter : MonoBehaviour
     {
-        public void Hide()
-        {
-            gameObject.SetActive(false);
-        }
-
         public void Highlight(HexagonGroup group)
         {
             gameObject.SetActive(true);
