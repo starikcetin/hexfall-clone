@@ -194,9 +194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4a66fdca106a294fa2d088055b83a0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _columnCount: 8
-  _rowCount: 9
-  _size: 0.4
 --- !u!4 &290725758
 Transform:
   m_ObjectHideFlags: 0
@@ -490,75 +487,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!1001 &760400401
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1565257828027174028, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_Name
-      value: global
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565257828027174030, guid: 29fc57722e9fa1e4582888199791b6e3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 29fc57722e9fa1e4582888199791b6e3, type: 3}
 --- !u!1 &783339190
 GameObject:
   m_ObjectHideFlags: 0
@@ -976,9 +904,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ccaae954ef9ba143860a6dd312c4668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameOverScene:
-    sceneAsset: {fileID: 102900000, guid: 4d2a7b1127ea10e4ab18648e2b578634, type: 3}
-    scenePath: Assets/game/scenes/game over.unity
 --- !u!114 &1332434250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1112,6 +1037,9 @@ MonoBehaviour:
   _bombLife: 6
   _bombScore: 1000
   _scorePerExplosion: 5
+  _columnCount: 8
+  _rowCount: 9
+  _size: 0.4
 --- !u!114 &1489966775
 MonoBehaviour:
   m_ObjectHideFlags: 0

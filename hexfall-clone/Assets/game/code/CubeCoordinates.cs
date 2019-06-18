@@ -71,8 +71,10 @@ namespace starikcetin.hexfallClone.game
             return new OffsetCoordinates(col, row);
         }
 
-        public Vector2 ToUnity(float size)
+        public Vector2 ToUnity()
         {
+            var size = GameParamsDatabase.Instance.Size;
+
             /*
                 function flat_hex_to_pixel(hex):
                     var x = size * (     3./2 * hex.q                    )

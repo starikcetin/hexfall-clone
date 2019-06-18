@@ -7,45 +7,25 @@ namespace starikcetin.hexfallClone.game.mechanics
 {
     public class GridBuilder : MonoBehaviour
     {
-        [SerializeField] private int _columnCount, _rowCount;
-        [SerializeField] private float _size;
-
-        private float HexWidth => _size * 2;
-        private float HexHeight => _size * Mathf.Sqrt(3);
-
-        /// <summary>
-        /// Horizontal distance between two adjacent hexagon centers in the same row.
-        /// </summary>
-        private float HexHorizontalDistance => HexWidth * 3f / 4f;
-
-        /// <summary>
-        /// Vertical distance between two adjacent hexagon centers in the same column.
-        /// </summary>
-        private float HexVerticalDistance => HexHeight;
-
-        protected void Awake()
-        {
-            // Write Game Params
-            GameParamsDatabase.Instance.Size = _size;
-            GameParamsDatabase.Instance.CenterOffset = CalculateCenterOffset(_size, _columnCount, _rowCount);
-        }
-
         private void Start()
         {
-            HexagonDatabase.Instance.HexagonGrid = BuildHexagonGrid(_size);
+            var columnCount = GameParamsDatabase.Instance.ColumnCount;
+            var rowCount = GameParamsDatabase.Instance.RowCount;
 
-            foreach (var hexagonGroup in AssembleHexagonGroups())
+            HexagonDatabase.Instance.HexagonGrid = BuildHexagonGrid(columnCount, rowCount);
+
+            foreach (var hexagonGroup in AssembleHexagonGroups(columnCount, rowCount))
             {
                 GroupDatabase.Instance.RegisterGroup(hexagonGroup);
             }
         }
 
-        private IEnumerable<Group> AssembleHexagonGroups()
+        private IEnumerable<Group> AssembleHexagonGroups(int columnCount, int rowCount)
         {
             // 2-right even (a)
 
-            for (int col = 0; col < _columnCount - 1; col+=2)
-            for (int row = 0; row < _rowCount - 1; row++)
+            for (int col = 0; col < columnCount - 1; col+=2)
+            for (int row = 0; row < rowCount - 1; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
                 var bravo = new OffsetCoordinates(col + 1, row + 1);
@@ -56,8 +36,8 @@ namespace starikcetin.hexfallClone.game.mechanics
 
             // 2-left even (b)
 
-            for (int col = 0; col < _columnCount - 1; col+=2)
-            for (int row = 0; row < _rowCount - 1; row++)
+            for (int col = 0; col < columnCount - 1; col+=2)
+            for (int row = 0; row < rowCount - 1; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
                 var bravo = new OffsetCoordinates(col, row + 1);
@@ -68,8 +48,8 @@ namespace starikcetin.hexfallClone.game.mechanics
 
             // 2-right odd (c)
 
-            for (int col = 1; col < _columnCount - 1; col+=2)
-            for (int row = 1; row < _rowCount; row++)
+            for (int col = 1; col < columnCount - 1; col+=2)
+            for (int row = 1; row < rowCount; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
                 var bravo = new OffsetCoordinates(col + 1, row);
@@ -80,8 +60,8 @@ namespace starikcetin.hexfallClone.game.mechanics
 
             // 2-left odd (d)
 
-            for (int col = 1; col < _columnCount - 1; col+=2)
-            for (int row = 0; row < _rowCount - 1; row++)
+            for (int col = 1; col < columnCount - 1; col+=2)
+            for (int row = 0; row < rowCount - 1; row++)
             {
                 var alpha = new OffsetCoordinates(col, row);
                 var bravo = new OffsetCoordinates(col, row + 1);
@@ -91,16 +71,16 @@ namespace starikcetin.hexfallClone.game.mechanics
             }
         }
 
-        private GameObject[,] BuildHexagonGrid(float size)
+        private GameObject[,] BuildHexagonGrid(int columnCount, int rowCount)
         {
-            GameObject[,] grid = new GameObject[_columnCount, _rowCount];
+            GameObject[,] grid = new GameObject[columnCount, rowCount];
 
-            for (var col = 0; col < _columnCount; col++)
+            for (var col = 0; col < columnCount; col++)
             {
-                for (var row = 0; row < _rowCount; row++)
+                for (var row = 0; row < rowCount; row++)
                 {
                     var offsetCoordinates = new OffsetCoordinates(col, row);
-                    var hex = HexagonCreator.Instance.CreateHexagon(size, offsetCoordinates, false);
+                    var hex = HexagonCreator.Instance.CreateHexagon(offsetCoordinates, false);
                     hex.name = $"({col}, {row})";
                     grid[col, row] = hex;
                 }
@@ -109,17 +89,6 @@ namespace starikcetin.hexfallClone.game.mechanics
             return grid;
         }
 
-        private Vector2 CalculateCenterOffset(float size, int colCount, int rowCount)
-        {
-            var totalWidth = HexHorizontalDistance * (colCount - 1);
-            var totalHeight = HexVerticalDistance * (rowCount - 1);
 
-            if (colCount > 1 || colCount < -1)
-            {
-                totalHeight += HexHeight / 2;
-            }
-
-            return new Vector2(totalWidth / 2, totalHeight / 2);
-        }
     }
 }

@@ -45,10 +45,10 @@ namespace starikcetin.hexfallClone.game
             return new CubeCoordinates(x, y, z);
         }
 
-        public Vector2 ToUnity(float size)
+        public Vector2 ToUnity()
         {
             // this is not due to laziness, I just want to reduce the possible points of failure (sweet lies)
-            return ToCube().ToUnity(size);
+            return ToCube().ToUnity();
         }
 
         public bool Equals(OffsetCoordinates other)

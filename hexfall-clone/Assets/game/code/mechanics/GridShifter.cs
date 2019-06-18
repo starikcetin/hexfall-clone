@@ -76,8 +76,7 @@ namespace starikcetin.hexfallClone.game.mechanics
         {
             var fillTarget = new OffsetCoordinates(col, row);
 
-            var hex = HexagonCreator.Instance.CreateHexagon(GameParamsDatabase.Instance.Size,
-                new OffsetCoordinates(col, refillSpawnRow), _shouldSpawnBomb);
+            var hex = HexagonCreator.Instance.CreateHexagon(new OffsetCoordinates(col, refillSpawnRow), _shouldSpawnBomb);
 
             if (_shouldSpawnBomb)
             {
@@ -88,7 +87,7 @@ namespace starikcetin.hexfallClone.game.mechanics
             HexagonDatabase.Instance[fillTarget] = hex;
 
             yield return
-                hex.GetComponent<Hexagon>().MoveTo(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f);
+                hex.GetComponent<Hexagon>().MoveTo(fillTarget.ToUnity(), 0.5f);
 
             callback();
         }
@@ -104,7 +103,7 @@ namespace starikcetin.hexfallClone.game.mechanics
             var newCoords = new OffsetCoordinates(col, row - shiftCount);
 
             yield return
-                hex.GetComponent<Hexagon>().MoveTo(newCoords.ToUnity(GameParamsDatabase.Instance.Size), 0.5f);
+                hex.GetComponent<Hexagon>().MoveTo(newCoords.ToUnity(), 0.5f);
 
             callback();
         }

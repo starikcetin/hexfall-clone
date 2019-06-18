@@ -8,7 +8,6 @@ namespace starikcetin.hexfallClone.game.ui
 {
     public class GameOverSceneUiManager : MonoBehaviour
     {
-        [SerializeField] private SceneReference _gameScene;
         [SerializeField] private EventButton _newGameButton;
         [SerializeField] private Text _score;
 
@@ -31,7 +30,7 @@ namespace starikcetin.hexfallClone.game.ui
         {
             Utils.LogConditional(nameof(NewGameButtonOnClick));
 
-            SceneManager.LoadScene(_gameScene.ScenePath);
+            SceneManager.LoadScene(SceneDatabase.Instance.GameScene.ScenePath);
         }
     }
 }

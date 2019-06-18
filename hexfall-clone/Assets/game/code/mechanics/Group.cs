@@ -26,13 +26,6 @@ namespace starikcetin.hexfallClone.game.mechanics
             Orientation = orientation;
         }
 
-        public Vector2 Center
-        {
-            get
-            {
-                var size = GameParamsDatabase.Instance.Size;
-                return (Alpha.ToUnity(size) + Bravo.ToUnity(size) + Charlie.ToUnity(size)) / 3f;
-            }
-        }
+        public Vector2 Center => (Alpha.ToUnity() + Bravo.ToUnity() + Charlie.ToUnity()) / 3f;
     }
 }
