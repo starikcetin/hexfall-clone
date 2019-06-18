@@ -90,7 +90,7 @@ namespace starikcetin.hexfallClone.game.mechanics
 
             // sync the position of the GameObject
             yield return
-                hex.GetComponent<Hexagon>().MoveTo(coords.ToUnity(GameParamsDatabase.Instance.Size), 0.25f);
+                hex.GetComponent<Hexagon>().MoveTo(coords.ToUnity(), 0.25f);
         }
     }
 }

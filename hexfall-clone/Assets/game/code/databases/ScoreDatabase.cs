@@ -1,6 +1,5 @@
 ﻿using System;
 using Eflatun.UnityCommon.Utils.CodePatterns;
-using UnityEngine;
 
 namespace starikcetin.hexfallClone.game.databases
 {
@@ -13,9 +12,7 @@ namespace starikcetin.hexfallClone.game.databases
 
         public void OnHexagonExploded()
         {
-            // 5 points per hexagon
-            // TODO make a game parameter
-            Score += 5;
+            Score += GameParamsDatabase.Instance.ScorePerExplosion;
 
             if (Score > 0 && Score % GameParamsDatabase.Instance.BombScore == 0)
             {

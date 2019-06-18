@@ -16,13 +16,12 @@ namespace starikcetin.hexfallClone.game.mechanics
         [SerializeField] private GroupHighlighter _groupHighlighter;
 
         private bool _isSelectionActive = false;
-
-        public Group SelectedGroup { get; private set; }
+        private bool _rotationSequenceActive;
 //        private GameObject _highlightGameObject;
-
         private InputManager _inputManager;
         private RotationSequenceHandler _rotationSequenceHandler;
-        private bool _rotationSequenceActive;
+
+        public Group SelectedGroup { get; private set; }
 
         private void Start()
         {
