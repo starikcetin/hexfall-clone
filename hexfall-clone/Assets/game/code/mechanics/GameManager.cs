@@ -69,46 +69,60 @@ namespace starikcetin.hexfallClone.game.mechanics
             _groupHighlighter.Highlight(group);
         }
 
-        private void InputManagerOnSwiped(SwipeDirection swipeDirection)
+        private void InputManagerOnSwiped(SwipeDirection swipeDirection, Vector2 swipeOrigin)
         {
             if (_rotationSequenceActive)
             {
                 return;
             }
 
-            Utils.LogConditional($"{nameof(GameManager)}: {nameof(InputManagerOnSwiped)}({nameof(swipeDirection)}: {swipeDirection})");
+            Utils.LogConditional(
+                $"{nameof(GameManager)}: {nameof(InputManagerOnSwiped)}({nameof(swipeDirection)}: {swipeDirection})");
 
             if (!_isSelectionActive)
             {
-                Utils.LogConditional($"{nameof(GameManager)}.{nameof(InputManagerOnSwiped)}: no active selection, ignoring swipe.");
+                Utils.LogConditional(
+                    $"{nameof(GameManager)}.{nameof(InputManagerOnSwiped)}: no active selection, ignoring swipe.");
                 return;
             }
 
-            StartCoroutine(RotationSequence(swipeDirection));
+            StartCoroutine(RotationSequence(swipeDirection, swipeOrigin));
         }
 
-        private IEnumerator RotationSequence(SwipeDirection swipeDirection)
+        private IEnumerator RotationSequence(SwipeDirection swipeDirection, Vector2 swipeOrigin)
         {
             _rotationSequenceActive = true;
             _groupHighlighter.gameObject.SetActive(false);
 
-            switch (swipeDirection)
-            {
-                case SwipeDirection.Right:
-                    yield return _rotationSequenceHandler.RotateSequence(RotationDirection.Clockwise);
-                    break;
+            var rotationDirection = CalculateRotationDirection(swipeDirection, SelectedGroup.Center, swipeOrigin);
 
-                case SwipeDirection.Left:
-                    yield return _rotationSequenceHandler.RotateSequence(RotationDirection.CounterClockwise);
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(swipeDirection), swipeDirection, null);
-            }
+            yield return _rotationSequenceHandler.RotateSequence(rotationDirection);
 
             ActionSequenceCompleted?.Invoke();
             _groupHighlighter.gameObject.SetActive(true);
             _rotationSequenceActive = false;
+        }
+
+        private RotationDirection CalculateRotationDirection(SwipeDirection swipeDirection, Vector2 selectionPosition,
+            Vector2 swipeOrigin)
+        {
+            var swipeOriginIsAboveSelection = swipeOrigin.y > selectionPosition.y;
+
+            switch (swipeDirection)
+            {
+                case SwipeDirection.Left:
+                    return swipeOriginIsAboveSelection
+                        ? RotationDirection.CounterClockwise
+                        : RotationDirection.Clockwise;
+
+                case SwipeDirection.Right:
+                    return swipeOriginIsAboveSelection
+                        ? RotationDirection.Clockwise
+                        : RotationDirection.CounterClockwise;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(swipeDirection), swipeDirection, null);
+            }
         }
     }
 }

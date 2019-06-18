@@ -7,7 +7,10 @@ namespace starikcetin.hexfallClone.game.input
 {
     public class InputManager : MonoBehaviour
     {
-        public event Action<SwipeDirection> Swiped;
+        /// <summary>
+        /// parameter #2 is swipe origin.
+        /// </summary>
+        public event Action<SwipeDirection, Vector2> Swiped;
 
         /// <summary>
         /// parameter is the world position of the tap.
@@ -37,14 +40,14 @@ namespace starikcetin.hexfallClone.game.input
         {
             Utils.LogConditional(nameof(InputManager) + " right swipe");
 
-            Swiped?.Invoke(SwipeDirection.Right);
+            Swiped?.Invoke(SwipeDirection.Right, finger.GetStartWorldPosition(-10));
         }
 
         private void OnLeftSwipe(LeanFinger finger)
         {
             Utils.LogConditional(nameof(InputManager) + " left swipe");
 
-            Swiped?.Invoke(SwipeDirection.Left);
+            Swiped?.Invoke(SwipeDirection.Left, finger.GetStartWorldPosition(-10));
         }
 
         private void OnTap(LeanFinger finger)
