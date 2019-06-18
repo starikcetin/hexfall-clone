@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Eflatun.UnityCommon.Utils.CodePatterns;
+﻿using Eflatun.UnityCommon.Utils.CodePatterns;
 using starikcetin.hexfallClone.game.databases;
 using UnityEngine;
 
