@@ -11,6 +11,9 @@ namespace starikcetin.hexfallClone.game.databases
         [SerializeField] public int _bombScore;
         public int BombScore => _bombScore;
 
+        [SerializeField] private int _scorePerExplosion;
+        public int ScorePerExplosion => _scorePerExplosion;
+
         public float Size { get; set; }
         public Vector2 CenterOffset { get; set; }
     }

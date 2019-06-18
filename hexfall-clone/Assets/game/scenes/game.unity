@@ -1111,6 +1111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bombLife: 6
   _bombScore: 1000
+  _scorePerExplosion: 5
 --- !u!114 &1489966775
 MonoBehaviour:
   m_ObjectHideFlags: 0
