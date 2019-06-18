@@ -1,4 +1,5 @@
-﻿using Eflatun.UnityCommon.Utils.CodePatterns;
+﻿using System;
+using Eflatun.UnityCommon.Utils.CodePatterns;
 using starikcetin.hexfallClone.game.mechanics;
 using UnityEngine;
 
@@ -11,7 +12,12 @@ namespace starikcetin.hexfallClone.game.databases
         /// Dim1 = row
         /// [col, row] => hexagon
         /// </summary>
-        public GameObject[,] HexagonGrid { get; set; }
+        public GameObject[,] HexagonGrid { get; private set; }
+
+        private void Start()
+        {
+            HexagonGrid = new GameObject[GameParamsDatabase.Instance.ColumnCount,GameParamsDatabase.Instance.RowCount];
+        }
 
         public GameObject this[OffsetCoordinates offsetCoordinates]
         {

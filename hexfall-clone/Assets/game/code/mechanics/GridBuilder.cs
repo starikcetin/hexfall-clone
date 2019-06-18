@@ -12,7 +12,7 @@ namespace starikcetin.hexfallClone.game.mechanics
             var columnCount = GameParamsDatabase.Instance.ColumnCount;
             var rowCount = GameParamsDatabase.Instance.RowCount;
 
-            HexagonDatabase.Instance.HexagonGrid = BuildHexagonGrid(columnCount, rowCount);
+            BuildHexagonGrid(columnCount, rowCount);
 
             foreach (var hexagonGroup in AssembleHexagonGroups(columnCount, rowCount))
             {
@@ -71,24 +71,20 @@ namespace starikcetin.hexfallClone.game.mechanics
             }
         }
 
-        private GameObject[,] BuildHexagonGrid(int columnCount, int rowCount)
+        private void BuildHexagonGrid(int columnCount, int rowCount)
         {
-            GameObject[,] grid = new GameObject[columnCount, rowCount];
-
             for (var col = 0; col < columnCount; col++)
             {
                 for (var row = 0; row < rowCount; row++)
                 {
+                    var performColorCheck = (col > 0) && (row > 0);
+
                     var offsetCoordinates = new OffsetCoordinates(col, row);
-                    var hex = HexagonCreator.Instance.CreateHexagon(offsetCoordinates, false);
+                    var hex = HexagonCreator.Instance.CreateHexagon(offsetCoordinates, false, performColorCheck);
                     hex.name = $"({col}, {row})";
-                    grid[col, row] = hex;
+                    HexagonDatabase.Instance[offsetCoordinates] = hex;
                 }
             }
-
-            return grid;
         }
-
-
     }
 }

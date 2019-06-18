@@ -26,7 +26,7 @@ namespace starikcetin.hexfallClone.game.mechanics
 
             if (false == areTherePossibleMoves)
             {
-                GameOverHandler.Instance.DeclareGameOver();
+                GameOverHandler.DeclareGameOver();
             }
         }
 

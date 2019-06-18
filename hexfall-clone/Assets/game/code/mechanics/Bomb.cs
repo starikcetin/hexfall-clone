@@ -38,7 +38,7 @@ namespace starikcetin.hexfallClone.game.mechanics
 
         private void Explode()
         {
-            GameOverHandler.Instance.DeclareGameOver();
+            GameOverHandler.DeclareGameOver();
         }
     }
 }
