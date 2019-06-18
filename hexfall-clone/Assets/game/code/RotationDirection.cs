@@ -1,5 +1,8 @@
-public enum RotationDirection
+namespace starikcetin.hexfallClone.game
 {
-    Clockwise,
-    CounterClockwise
+    public enum RotationDirection
+    {
+        Clockwise,
+        CounterClockwise
+    }
 }

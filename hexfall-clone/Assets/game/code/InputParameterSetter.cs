@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-public class InputParameterSetter : MonoBehaviour
+namespace starikcetin.hexfallClone.game
 {
-    private void Start()
+    public class InputParameterSetter : MonoBehaviour
     {
-        Input.backButtonLeavesApp = true;
-        Input.multiTouchEnabled = false;
+        private void Start()
+        {
+            Input.backButtonLeavesApp = true;
+            Input.multiTouchEnabled = false;
+        }
     }
 }

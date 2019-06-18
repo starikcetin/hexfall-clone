@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     /// <summary>
     /// Alpha > Bravo > Charlie.

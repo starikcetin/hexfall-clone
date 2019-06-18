@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Eflatun.UnityCommon.Utils.CodePatterns;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     public class HexagonGridBuilder : SceneSingleton<HexagonGridBuilder>
     {

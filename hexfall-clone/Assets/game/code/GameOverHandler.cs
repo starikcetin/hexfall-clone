@@ -1,17 +1,18 @@
 ﻿using Eflatun.UnityCommon.Utils.CodePatterns;
-using starikcetin.hexfallClone;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameOverHandler : SceneSingleton<GameOverHandler>
+namespace starikcetin.hexfallClone.game
 {
-    [SerializeField] private SceneReference _gameOverScene;
-
-    public void DeclareGameOver()
+    public class GameOverHandler : SceneSingleton<GameOverHandler>
     {
-        Utils.LogConditional("----- Game Over -----");
+        [SerializeField] private SceneReference _gameOverScene;
 
-        SceneManager.LoadScene(_gameOverScene.ScenePath);
+        public void DeclareGameOver()
+        {
+            Utils.LogConditional("----- Game Over -----");
+
+            SceneManager.LoadScene(_gameOverScene.ScenePath);
+        }
     }
 }

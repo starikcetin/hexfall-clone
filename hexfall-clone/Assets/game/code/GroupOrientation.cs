@@ -1,4 +1,4 @@
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     public enum GroupOrientation
     {

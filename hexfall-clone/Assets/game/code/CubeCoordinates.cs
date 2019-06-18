@@ -1,7 +1,7 @@
 using System.Diagnostics.Contracts;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     /// <summary>
     /// Representation of hexagons on the hexagonal cube coordinate system.

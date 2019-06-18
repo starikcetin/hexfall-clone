@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     /// <summary>
     /// Representation of hexagons on the hexagonal odd-q offset coordinate system.

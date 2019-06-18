@@ -1,11 +1,14 @@
 ﻿using Eflatun.UnityCommon.Utils.CodePatterns;
 using UnityEngine;
 
-public class PrefabDatabase : SceneSingleton<PrefabDatabase>
+namespace starikcetin.hexfallClone.game
 {
-    [SerializeField] private GameObject _hexagon;
-    public GameObject Hexagon => _hexagon;
+    public class PrefabDatabase : SceneSingleton<PrefabDatabase>
+    {
+        [SerializeField] private GameObject _hexagon;
+        public GameObject Hexagon => _hexagon;
 
-    [SerializeField] private GameObject _bombHexagon;
-    public GameObject BombHexagon => _bombHexagon;
+        [SerializeField] private GameObject _bombHexagon;
+        public GameObject BombHexagon => _bombHexagon;
+    }
 }

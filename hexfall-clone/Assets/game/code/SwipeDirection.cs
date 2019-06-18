@@ -1,5 +1,8 @@
-public enum SwipeDirection
+namespace starikcetin.hexfallClone.game
 {
-    Left,
-    Right
+    public enum SwipeDirection
+    {
+        Left,
+        Right
+    }
 }

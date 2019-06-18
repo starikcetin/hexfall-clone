@@ -1,40 +1,43 @@
 ﻿using System;
 using UnityEngine;
 
-public class Bomb : MonoBehaviour
+namespace starikcetin.hexfallClone.game
 {
-    /// <summary>
-    /// Parameter is the lives left.
-    /// </summary>
-    public event Action<int> LifeChange;
-
-    public int LivesLeft { get; private set; }
-
-    private void Start()
+    public class Bomb : MonoBehaviour
     {
-        LivesLeft = GameParamsDatabase.Instance.BombLife;
-        GameManager.Instance.ActionSequenceCompleted += InstanceOnActionSequenceCompleted;
-    }
+        /// <summary>
+        /// Parameter is the lives left.
+        /// </summary>
+        public event Action<int> LifeChange;
 
-    private void OnDisable()
-    {
-        GameManager.Instance.ActionSequenceCompleted -= InstanceOnActionSequenceCompleted;
-    }
+        public int LivesLeft { get; private set; }
 
-    private void InstanceOnActionSequenceCompleted()
-    {
-        LivesLeft--;
-        
-        LifeChange?.Invoke(LivesLeft);
-
-        if (LivesLeft <= 0)
+        private void Start()
         {
-            Explode();
+            LivesLeft = GameParamsDatabase.Instance.BombLife;
+            GameManager.Instance.ActionSequenceCompleted += InstanceOnActionSequenceCompleted;
         }
-    }
 
-    private void Explode()
-    {
-        GameOverHandler.Instance.DeclareGameOver();
+        private void OnDisable()
+        {
+            GameManager.Instance.ActionSequenceCompleted -= InstanceOnActionSequenceCompleted;
+        }
+
+        private void InstanceOnActionSequenceCompleted()
+        {
+            LivesLeft--;
+        
+            LifeChange?.Invoke(LivesLeft);
+
+            if (LivesLeft <= 0)
+            {
+                Explode();
+            }
+        }
+
+        private void Explode()
+        {
+            GameOverHandler.Instance.DeclareGameOver();
+        }
     }
 }

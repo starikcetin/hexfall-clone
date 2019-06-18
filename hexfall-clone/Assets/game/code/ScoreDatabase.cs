@@ -2,30 +2,33 @@
 using Eflatun.UnityCommon.Utils.CodePatterns;
 using UnityEngine;
 
-public class ScoreDatabase : GlobalSingleton<ScoreDatabase>
+namespace starikcetin.hexfallClone.game
 {
-    public event Action<int> ScoreChanged;
-    public event Action BombScoreReached;
-
-    public int Score { get; private set; }
-
-    public void OnHexagonExploded()
+    public class ScoreDatabase : GlobalSingleton<ScoreDatabase>
     {
-        // 5 points per hexagon
-        // TODO make a game parameter
-        Score += 5;
+        public event Action<int> ScoreChanged;
+        public event Action BombScoreReached;
 
-        if (Score > 0 && Score % GameParamsDatabase.Instance.BombScore == 0)
+        public int Score { get; private set; }
+
+        public void OnHexagonExploded()
         {
-            BombScoreReached?.Invoke();
+            // 5 points per hexagon
+            // TODO make a game parameter
+            Score += 5;
+
+            if (Score > 0 && Score % GameParamsDatabase.Instance.BombScore == 0)
+            {
+                BombScoreReached?.Invoke();
+            }
+
+            ScoreChanged?.Invoke(Score);
         }
 
-        ScoreChanged?.Invoke(Score);
-    }
-
-    public void ResetScore()
-    {
-        Debug.Log(nameof(ResetScore));
-        Score = 0;
+        public void ResetScore()
+        {
+            Debug.Log(nameof(ResetScore));
+            Score = 0;
+        }
     }
 }

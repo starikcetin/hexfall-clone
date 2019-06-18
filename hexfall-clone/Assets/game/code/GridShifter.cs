@@ -1,109 +1,111 @@
 ﻿using System;
 using System.Collections;
-using starikcetin.hexfallClone;
 using UnityEngine;
 
-public class GridShifter : MonoBehaviour
+namespace starikcetin.hexfallClone.game
 {
-    private bool _shouldSpawnBomb;
-
-    private void Start()
+    public class GridShifter : MonoBehaviour
     {
-        ScoreDatabase.Instance.BombScoreReached += OnBombScoreReached;
-    }
+        private bool _shouldSpawnBomb;
 
-    private void OnDestroy()
-    {
-        if (ScoreDatabase.Instance)
+        private void Start()
         {
-            ScoreDatabase.Instance.BombScoreReached -= OnBombScoreReached;
+            ScoreDatabase.Instance.BombScoreReached += OnBombScoreReached;
         }
-    }
 
-    private void OnBombScoreReached()
-    {
-        _shouldSpawnBomb = true;
-    }
-
-    public IEnumerator ShiftAndRefillAll()
-    {
-        var jobCounter = new JobCounter(true);
-
-        for (int col = 0; col < HexagonDatabase.Instance.HexagonGrid.GetLength(0); col++)
+        private void OnDestroy()
         {
-            // count empty cells
-            int shiftCount = 0;
-
-            for (int row = 0; row < HexagonDatabase.Instance.HexagonGrid.GetLength(1); row++)
+            if (ScoreDatabase.Instance)
             {
-                var hex = HexagonDatabase.Instance.HexagonGrid[col, row];
+                ScoreDatabase.Instance.BombScoreReached -= OnBombScoreReached;
+            }
+        }
 
-                if (!hex)
+        private void OnBombScoreReached()
+        {
+            _shouldSpawnBomb = true;
+        }
+
+        public IEnumerator ShiftAndRefillAll()
+        {
+            var jobCounter = new JobCounter(true);
+
+            for (int col = 0; col < HexagonDatabase.Instance.HexagonGrid.GetLength(0); col++)
+            {
+                // count empty cells
+                int shiftCount = 0;
+
+                for (int row = 0; row < HexagonDatabase.Instance.HexagonGrid.GetLength(1); row++)
                 {
-                    // empty cell: count
-                    shiftCount++;
-                }
-                else
-                {
-                    if (shiftCount > 0)
+                    var hex = HexagonDatabase.Instance.HexagonGrid[col, row];
+
+                    if (!hex)
                     {
-                        // full cell: shift
-                        jobCounter.JobStarted();
-                        StartCoroutine(Shift(col, row, shiftCount, hex, jobCounter.JobFinished));
+                        // empty cell: count
+                        shiftCount++;
+                    }
+                    else
+                    {
+                        if (shiftCount > 0)
+                        {
+                            // full cell: shift
+                            jobCounter.JobStarted();
+                            StartCoroutine(Shift(col, row, shiftCount, hex, jobCounter.JobFinished));
+                        }
                     }
                 }
+
+                var rowLength = HexagonDatabase.Instance.HexagonGrid.GetLength(1);
+                var refillSpawnRow = rowLength + 2;
+
+                // refill. The amount is exactly <shiftCount>.
+                for (var row = rowLength - shiftCount; row < rowLength; row++)
+                {
+                    jobCounter.JobStarted();
+                    StartCoroutine(Refill(col, row, refillSpawnRow, jobCounter.JobFinished));
+                }
             }
 
-            var rowLength = HexagonDatabase.Instance.HexagonGrid.GetLength(1);
-            var refillSpawnRow = rowLength + 2;
+            jobCounter.PermitCompletion();
 
-            // refill. The amount is exactly <shiftCount>.
-            for (var row = rowLength - shiftCount; row < rowLength; row++)
-            {
-                jobCounter.JobStarted();
-                StartCoroutine(Refill(col, row, refillSpawnRow, jobCounter.JobFinished));
-            }
+            yield return new WaitUntil(() => jobCounter.IsCompleted);
         }
 
-        jobCounter.PermitCompletion();
-
-        yield return new WaitUntil(() => jobCounter.IsCompleted);
-    }
-
-    private IEnumerator Refill(int col, int row, int refillSpawnRow, Action callback)
-    {
-        var fillTarget = new OffsetCoordinates(col, row);
-
-        var hex = HexagonGridBuilder.Instance.CreateHexagon(GameParamsDatabase.Instance.Size,
-            new OffsetCoordinates(col, refillSpawnRow), _shouldSpawnBomb);
-
-        if (_shouldSpawnBomb)
+        private IEnumerator Refill(int col, int row, int refillSpawnRow, Action callback)
         {
-            _shouldSpawnBomb = false;
+            var fillTarget = new OffsetCoordinates(col, row);
+
+            var hex = HexagonGridBuilder.Instance.CreateHexagon(GameParamsDatabase.Instance.Size,
+                new OffsetCoordinates(col, refillSpawnRow), _shouldSpawnBomb);
+
+            if (_shouldSpawnBomb)
+            {
+                _shouldSpawnBomb = false;
+            }
+
+            // data shift can be instant, nothing will/should interfere
+            HexagonDatabase.Instance[fillTarget] = hex;
+
+            yield return
+                hex.GetComponent<Hexagon>().MoveTo(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f);
+
+            callback();
         }
 
-        // data shift can be instant, nothing will/should interfere
-        HexagonDatabase.Instance[fillTarget] = hex;
+        private static IEnumerator Shift(int col, int row, int shiftCount, GameObject hex, Action callback)
+        {
+            Utils.LogConditional($"{nameof(GridShifter)}.{nameof(Shift)}: shifting... " +
+                                 $"pos: [{col}, {row}] shiftCount: {shiftCount} {nameof(hex)}: {hex}");
 
-        yield return
-            hex.GetComponent<Hexagon>().MoveTo(fillTarget.ToUnity(GameParamsDatabase.Instance.Size), 0.5f);
+            // data shift can be instant, nothing will/should interfere
+            HexagonDatabase.Swap(col, row, row - shiftCount);
 
-        callback();
-    }
+            var newCoords = new OffsetCoordinates(col, row - shiftCount);
 
-    private static IEnumerator Shift(int col, int row, int shiftCount, GameObject hex, Action callback)
-    {
-        Utils.LogConditional($"{nameof(GridShifter)}.{nameof(Shift)}: shifting... " +
-                  $"pos: [{col}, {row}] shiftCount: {shiftCount} {nameof(hex)}: {hex}");
+            yield return
+                hex.GetComponent<Hexagon>().MoveTo(newCoords.ToUnity(GameParamsDatabase.Instance.Size), 0.5f);
 
-        // data shift can be instant, nothing will/should interfere
-        HexagonDatabase.Swap(col, row, row - shiftCount);
-
-        var newCoords = new OffsetCoordinates(col, row - shiftCount);
-
-        yield return
-            hex.GetComponent<Hexagon>().MoveTo(newCoords.ToUnity(GameParamsDatabase.Instance.Size), 0.5f);
-
-        callback();
+            callback();
+        }
     }
 }

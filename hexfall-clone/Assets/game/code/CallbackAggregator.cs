@@ -3,58 +3,61 @@ using System.Diagnostics.Contracts;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class CallbackAggregator
+namespace starikcetin.hexfallClone.game
 {
-    private int JobCount { get; set; }
-    private readonly Action _masterCallback;
-    private bool _callbackPermission;
-    private bool _masterInvoked;
-
-    public CallbackAggregator(Action masterCallback)
+    public class CallbackAggregator
     {
-        if (masterCallback == null)
+        private int JobCount { get; set; }
+        private readonly Action _masterCallback;
+        private bool _callbackPermission;
+        private bool _masterInvoked;
+
+        public CallbackAggregator(Action masterCallback)
         {
-            Debug.LogWarning("CallbackAggregator: Master callback is null. " +
-                             "Why create a CallbackAggregator if you don't have a callback in the first place?");
+            if (masterCallback == null)
+            {
+                Debug.LogWarning("CallbackAggregator: Master callback is null. " +
+                                 "Why create a CallbackAggregator if you don't have a callback in the first place?");
+            }
+
+            _masterCallback = masterCallback;
         }
 
-        _masterCallback = masterCallback;
-    }
-
-    public void PermitCallback()
-    {
-        _callbackPermission = true;
-        CallbackIfCompleted();
-    }
-
-    public void JobStarted()
-    {
-        JobCount++;
-    }
-
-    public void JobFinished()
-    {
-        JobCount--;
-        CallbackIfCompleted();
-    }
-
-    private void CallbackIfCompleted()
-    {
-        if (_masterInvoked)
+        public void PermitCallback()
         {
-            Debug.LogWarning("CallbackAggregator: Master is already invoked before. Something is wrong here!");
+            _callbackPermission = true;
+            CallbackIfCompleted();
         }
 
-        if (_callbackPermission && JobCount == 0)
+        public void JobStarted()
         {
-            _masterInvoked = true;
-            _masterCallback?.Invoke();
+            JobCount++;
         }
-    }
 
-    [ContractInvariantMethod]
-    private void _Invariant()
-    {
-        Assert.IsFalse(JobCount < 0, "We got negative job count somehow boss, something is wrong here.");
+        public void JobFinished()
+        {
+            JobCount--;
+            CallbackIfCompleted();
+        }
+
+        private void CallbackIfCompleted()
+        {
+            if (_masterInvoked)
+            {
+                Debug.LogWarning("CallbackAggregator: Master is already invoked before. Something is wrong here!");
+            }
+
+            if (_callbackPermission && JobCount == 0)
+            {
+                _masterInvoked = true;
+                _masterCallback?.Invoke();
+            }
+        }
+
+        [ContractInvariantMethod]
+        private void _Invariant()
+        {
+            Assert.IsFalse(JobCount < 0, "We got negative job count somehow boss, something is wrong here.");
+        }
     }
 }

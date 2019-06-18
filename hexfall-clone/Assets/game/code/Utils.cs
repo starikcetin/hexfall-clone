@@ -3,7 +3,7 @@ using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     public static class Utils
     {

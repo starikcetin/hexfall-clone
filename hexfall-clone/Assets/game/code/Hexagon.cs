@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
 using DG.Tweening;
 using Lean.Transition;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     public class Hexagon : MonoBehaviour
     {

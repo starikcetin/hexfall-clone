@@ -1,36 +1,39 @@
 using System.Diagnostics.Contracts;
 using UnityEngine.Assertions;
 
-public class JobCounter
+namespace starikcetin.hexfallClone.game
 {
-    public bool IsCompleted => _completePermission && _jobCount == 0;
-
-    private int _jobCount;
-    private bool _completePermission;
-
-    public JobCounter(bool waitForPermission)
+    public class JobCounter
     {
-        _completePermission = !waitForPermission;
-    }
+        public bool IsCompleted => _completePermission && _jobCount == 0;
 
-    public void PermitCompletion()
-    {
-        _completePermission = true;
-    }
+        private int _jobCount;
+        private bool _completePermission;
 
-    public void JobStarted()
-    {
-        _jobCount++;
-    }
+        public JobCounter(bool waitForPermission)
+        {
+            _completePermission = !waitForPermission;
+        }
 
-    public void JobFinished()
-    {
-        _jobCount--;
-    }
+        public void PermitCompletion()
+        {
+            _completePermission = true;
+        }
 
-    [ContractInvariantMethod]
-    private void _Invariant()
-    {
-        Assert.IsFalse(_jobCount < 0, "We got negative job count somehow boss, something is wrong here.");
+        public void JobStarted()
+        {
+            _jobCount++;
+        }
+
+        public void JobFinished()
+        {
+            _jobCount--;
+        }
+
+        [ContractInvariantMethod]
+        private void _Invariant()
+        {
+            Assert.IsFalse(_jobCount < 0, "We got negative job count somehow boss, something is wrong here.");
+        }
     }
 }

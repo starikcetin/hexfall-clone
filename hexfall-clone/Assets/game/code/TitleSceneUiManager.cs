@@ -1,30 +1,32 @@
 ﻿using Eflatun.UnityCommon.Utils.UI;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TitleSceneUiManager : MonoBehaviour
+namespace starikcetin.hexfallClone.game
 {
-    [SerializeField] private EventButton _newGameButton;
-    [SerializeField] private SceneReference _gameScene;
-
-    private void Start()
+    public class TitleSceneUiManager : MonoBehaviour
     {
-        _newGameButton.OnClick += NewGameButtonOnClick;
-    }
+        [SerializeField] private EventButton _newGameButton;
+        [SerializeField] private SceneReference _gameScene;
 
-    private void OnDestroy()
-    {
-        if (_newGameButton)
+        private void Start()
         {
-            _newGameButton.OnClick -= NewGameButtonOnClick;
+            _newGameButton.OnClick += NewGameButtonOnClick;
         }
-    }
 
-    private void NewGameButtonOnClick()
-    {
-        Debug.Log(nameof(NewGameButtonOnClick));
+        private void OnDestroy()
+        {
+            if (_newGameButton)
+            {
+                _newGameButton.OnClick -= NewGameButtonOnClick;
+            }
+        }
 
-        SceneManager.LoadScene(_gameScene.ScenePath);
+        private void NewGameButtonOnClick()
+        {
+            Debug.Log(nameof(NewGameButtonOnClick));
+
+            SceneManager.LoadScene(_gameScene.ScenePath);
+        }
     }
 }
