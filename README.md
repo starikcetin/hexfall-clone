@@ -14,7 +14,7 @@ points to *submodules/Eflatun.UnityCommon/Assets/Eflatun.UnityCommon*
 * JohannesMP.SceneReference   
 points to *submodules/JohannesMP.SceneReference*
 
-They might be broken due the way git handles NTFS symlinks. If they are, simply remove the files and recreate the symlinks.
+They might be broken due to the way git handles NTFS symlinks. If they are, simply remove the files and recreate the symlinks.
 
 ## 3rd Party
 
