@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace starikcetin.hexfallClone.game
 {
+    [RequireComponent(typeof(RotationSequenceHandler))]
     public class GameManager : SceneSingleton<GameManager>
     {
         public event Action ActionSequenceCompleted;
@@ -17,10 +18,11 @@ namespace starikcetin.hexfallClone.game
         private GameObject _highlightGameObject;
 
         private InputManager _inputManager;
-
+        private RotationSequenceHandler _rotationSequenceHandler;
 
         private void Start()
         {
+            _rotationSequenceHandler = GetComponent<RotationSequenceHandler>();
             _inputManager = GetComponentInChildren<InputManager>();
 
             _inputManager.Swiped += InputManagerOnSwiped;
@@ -77,11 +79,11 @@ namespace starikcetin.hexfallClone.game
             switch (swipeDirection)
             {
                 case SwipeDirection.Right:
-                    yield return GetComponent<RotationSequenceHandler>().RotateSequence(RotationDirection.Clockwise);
+                    yield return _rotationSequenceHandler.RotateSequence(RotationDirection.Clockwise);
                     break;
 
                 case SwipeDirection.Left:
-                    yield return GetComponent<RotationSequenceHandler>().RotateSequence(RotationDirection.CounterClockwise);
+                    yield return _rotationSequenceHandler.RotateSequence(RotationDirection.CounterClockwise);
                     break;
 
                 default:

@@ -5,8 +5,16 @@ using UnityEngine;
 
 namespace starikcetin.hexfallClone
 {
+    [RequireComponent(typeof(MatchHandler))]
     public class RotationSequenceHandler : MonoBehaviour
     {
+        private MatchHandler _matchHandler;
+
+        private void Start()
+        {
+            _matchHandler = GetComponent<MatchHandler>();
+        }
+
         public IEnumerator RotateSequence(RotationDirection direction)
         {
             for (int i = 0; i < 3; i++)
@@ -27,7 +35,7 @@ namespace starikcetin.hexfallClone
                 }
 
                 // check for matches
-                yield return GetComponent<MatchHandler>().CheckAndHandleMatches();
+                yield return _matchHandler.CheckAndHandleMatches();
 
                 if (GetComponent<MatchHandler>().MatchFound)
                 {

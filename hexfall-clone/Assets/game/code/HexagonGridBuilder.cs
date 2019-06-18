@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Eflatun.UnityCommon.Utils.CodePatterns;
 using UnityEngine;
 
 namespace starikcetin.hexfallClone.game
 {
-    public class HexagonGridBuilder : SceneSingleton<HexagonGridBuilder>
+    public class HexagonGridBuilder : MonoBehaviour
     {
         [SerializeField] private int _columnCount, _rowCount;
         [SerializeField] private float _size;
@@ -99,7 +98,7 @@ namespace starikcetin.hexfallClone.game
                 for (var row = 0; row < _rowCount; row++)
                 {
                     var offsetCoordinates = new OffsetCoordinates(col, row);
-                    var hex = CreateHexagon(size, offsetCoordinates, false);
+                    var hex = HexagonCreator.Instance.CreateHexagon(size, offsetCoordinates, false);
                     hex.name = $"({col}, {row})";
                     grid[col, row] = hex;
                 }
@@ -107,21 +106,7 @@ namespace starikcetin.hexfallClone.game
 
             return grid;
         }
-
-        /// <summary>
-        /// DOES NOT REGISTER THE NEW HEXAGON WITH <see cref="HexagonDatabase"/>. MAKE IT YOURSELF.
-        /// </summary>
-        public GameObject CreateHexagon(float size, OffsetCoordinates offsetCoordinates, bool isBomb)
-        {
-            var prefab = isBomb ? PrefabDatabase.Instance.BombHexagon : PrefabDatabase.Instance.Hexagon;
-
-            var newHexagon = Instantiate(prefab, transform);
-            newHexagon.transform.position = offsetCoordinates.ToUnity(size);
-            var colour = ColourDatabase.Instance.RandomColour();
-            newHexagon.GetComponent<Hexagon>().SetColor(colour);
-            return newHexagon;
-        }
-
+        
         private Vector2 CalculateCenterOffset(float size, int colCount, int rowCount)
         {
             var totalWidth = HexHorizontalDistance * (colCount - 1);

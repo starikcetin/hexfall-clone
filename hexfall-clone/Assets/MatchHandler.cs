@@ -5,10 +5,18 @@ using UnityEngine;
 
 namespace starikcetin.hexfallClone
 {
+    [RequireComponent(typeof(GridShifter))]
     public class MatchHandler : MonoBehaviour
     {
         private readonly Queue<HexagonGroup> _matches = new Queue<HexagonGroup>();
+        private GridShifter _gridShifter;
+
         public bool MatchFound { get; private set; }
+
+        private void Start()
+        {
+            _gridShifter = GetComponent<GridShifter>();
+        }
 
         public IEnumerator CheckAndHandleMatches()
         {
@@ -74,7 +82,7 @@ namespace starikcetin.hexfallClone
 
         private IEnumerator RequestShift()
         {
-            yield return GetComponent<GridShifter>().ShiftAndRefillAll();
+            yield return _gridShifter.ShiftAndRefillAll();
         }
 
         private bool CheckForMatch(HexagonGroup group)
