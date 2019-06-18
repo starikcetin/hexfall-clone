@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using starikcetin.hexfallClone.game;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     [RequireComponent(typeof(GridShifter))]
     public class MatchHandler : MonoBehaviour

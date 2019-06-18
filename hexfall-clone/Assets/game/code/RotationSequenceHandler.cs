@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
-using starikcetin.hexfallClone.game;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     [RequireComponent(typeof(MatchHandler))]
     public class RotationSequenceHandler : MonoBehaviour
