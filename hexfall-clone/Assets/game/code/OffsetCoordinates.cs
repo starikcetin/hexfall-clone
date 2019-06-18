@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     /// <summary>
     /// Representation of hexagons on the hexagonal odd-q offset coordinate system.
@@ -45,10 +45,10 @@ namespace starikcetin.hexfallClone
             return new CubeCoordinates(x, y, z);
         }
 
-        public Vector2 ToUnity(float size)
+        public Vector2 ToUnity()
         {
             // this is not due to laziness, I just want to reduce the possible points of failure (sweet lies)
-            return ToCube().ToUnity(size);
+            return ToCube().ToUnity();
         }
 
         public bool Equals(OffsetCoordinates other)

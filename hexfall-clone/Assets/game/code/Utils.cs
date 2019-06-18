@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using starikcetin.hexfallClone.game.databases;
+using starikcetin.hexfallClone.game.mechanics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     public static class Utils
     {
@@ -24,13 +26,13 @@ namespace starikcetin.hexfallClone
         }
 
         /// <summary>
-        /// Checks if <paramref name="hexagonGroup"/> contains <paramref name="foundColor"/>.
+        /// Checks if <paramref name="group"/> contains <paramref name="foundColor"/>.
         /// </summary>
-        public static int CountForColor(HexagonGroup hexagonGroup, Color foundColor)
+        public static int CountForColor(Group @group, Color foundColor)
         {
             int count = 0;
 
-            var (ac, bc, cc) = GetColors(hexagonGroup);
+            var (ac, bc, cc) = GetColors(@group);
 
             if (ac == foundColor) count++;
             if (bc == foundColor) count++;
@@ -39,14 +41,14 @@ namespace starikcetin.hexfallClone
             return count;
         }
 
-        public static (Color alphaColor, Color bravoColor, Color charlieColor) GetColors(HexagonGroup group)
+        public static (Color alphaColor, Color bravoColor, Color charlieColor) GetColors(Group group)
         {
             var (a, b, c) = HexagonDatabase.Instance[@group];
             var (ah, bh, ch) = (a.GetComponent<Hexagon>(), b.GetComponent<Hexagon>(), c.GetComponent<Hexagon>());
             return (ah.Color, bh.Color, ch.Color);
         }
 
-        public static bool Contains(HexagonGroup g, OffsetCoordinates oc)
+        public static bool Contains(Group g, OffsetCoordinates oc)
         {
             return g.Alpha == oc || g.Bravo == oc || g.Charlie == oc;
         }

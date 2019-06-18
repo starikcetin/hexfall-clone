@@ -1,7 +1,8 @@
 using System.Diagnostics.Contracts;
+using starikcetin.hexfallClone.game.databases;
 using UnityEngine;
 
-namespace starikcetin.hexfallClone
+namespace starikcetin.hexfallClone.game
 {
     /// <summary>
     /// Representation of hexagons on the hexagonal cube coordinate system.
@@ -70,8 +71,10 @@ namespace starikcetin.hexfallClone
             return new OffsetCoordinates(col, row);
         }
 
-        public Vector2 ToUnity(float size)
+        public Vector2 ToUnity()
         {
+            var size = GameParamsDatabase.Instance.Size;
+
             /*
                 function flat_hex_to_pixel(hex):
                     var x = size * (     3./2 * hex.q                    )
