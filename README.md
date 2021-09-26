@@ -1,11 +1,15 @@
 # hexfall-clone
 My demo project for Vertigo Games.
 
-## Notes
+## Install
+
+Download the APK from the releases page: https://github.com/starikcetin/hexfall-clone/releases
+
+## References
 
 Reference page for terminology and formulas: https://www.redblobgames.com/grids/hexagons/
 
----
+## Technical
 
 Assets/Plugins contains three symlinks:
 
