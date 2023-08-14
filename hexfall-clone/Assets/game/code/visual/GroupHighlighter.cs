@@ -1,10 +1,17 @@
-﻿using starikcetin.hexfallClone.game.mechanics;
+﻿using System;
+using starikcetin.hexfallClone.game.databases;
+using starikcetin.hexfallClone.game.mechanics;
 using UnityEngine;
 
 namespace starikcetin.hexfallClone.game.visual
 {
     public class GroupHighlighter : MonoBehaviour
     {
+        private void Start()
+        {
+            transform.localScale = GameParamsDatabase.Instance.GameAreaScale;
+        }
+
         public void Highlight(Group group)
         {
             gameObject.SetActive(true);

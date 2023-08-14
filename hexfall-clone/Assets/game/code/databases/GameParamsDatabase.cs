@@ -25,6 +25,17 @@ namespace starikcetin.hexfallClone.game.databases
 
         public Vector2 CenterOffset { get; private set; }
 
+        public Vector3 GameAreaScale
+        {
+            get
+            {
+                var factor = Mathf.Min(((float)Screen.width / Screen.height) / (1080f / 1920f), 1f);
+                return new Vector3(factor, factor, 1);
+            }
+        }
+
+        public Matrix4x4 GameAreaScaleMatrix => Matrix4x4.Scale(GameAreaScale);
+
         private float HexWidth => Size * 2;
         private float HexHeight => Size * Mathf.Sqrt(3);
 
@@ -37,7 +48,6 @@ namespace starikcetin.hexfallClone.game.databases
         /// Vertical distance between two adjacent hexagon centers in the same column.
         /// </summary>
         private float HexVerticalDistance => HexHeight;
-
 
         protected void Awake()
         {
