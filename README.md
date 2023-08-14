@@ -16,7 +16,7 @@ Reference page for terminology and formulas: https://www.redblobgames.com/grids/
 
 ## Technical
 
-Assets/Plugins contains a symlink `Eflatun.UnityCommon` that points to *submodules/Eflatun.UnityCommon/Assets/Eflatun.UnityCommon*. It might get broken after a repo clone due to the way git handles NTFS symlinks. If it is broken, simply remove the dummy file in place of the symlink and recreate the NTFS symlinks.
+Assets/Plugins contains a symlink `Eflatun.UnityCommon` that points to `submodules/Eflatun.UnityCommon/Assets/Eflatun.UnityCommon`. It might get broken after a repo clone due to the way git handles NTFS symlinks. If it is broken, simply remove the dummy file in place of the symlink and recreate the NTFS symlink.
 
 ## 3rd Party
 
