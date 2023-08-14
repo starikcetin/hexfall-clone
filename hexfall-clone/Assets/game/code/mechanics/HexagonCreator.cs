@@ -12,17 +12,11 @@ namespace starikcetin.hexfallClone.game.mechanics
         public GameObject CreateHexagon(OffsetCoordinates offsetCoordinates, bool isBomb, bool performColorCheck)
         {
             var prefab = isBomb ? PrefabDatabase.Instance.BombHexagon : PrefabDatabase.Instance.Hexagon;
-
+            var colour = GetColor(performColorCheck, offsetCoordinates);
             var newHexagon = Instantiate(prefab, transform);
             newHexagon.transform.position = offsetCoordinates.ToUnity();
-
-
-            var colour = GetColor(performColorCheck, offsetCoordinates);
-
-
+            newHexagon.transform.localScale = GameParamsDatabase.Instance.GameAreaScale;
             newHexagon.GetComponent<Hexagon>().SetColor(colour);
-
-
             return newHexagon;
         }
 
