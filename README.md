@@ -1,9 +1,14 @@
 # hexfall-clone
-My demo project for Vertigo Games.
 
-## Install
+A hexagonal match-3 puzzle game. 
+
+Clone of the Hexfall game. My demo project for Vertigo Games.
+
+## Play
 
 Download the APK from the releases page: https://github.com/starikcetin/hexfall-clone/releases
+
+Tap to select a group of 3 hexagons. Swipe to rotate them. Match the same colors.
 
 ## References
 
@@ -11,18 +16,7 @@ Reference page for terminology and formulas: https://www.redblobgames.com/grids/
 
 ## Technical
 
-Assets/Plugins contains three symlinks:
-
-* Eflatun.Expansions    
-points to *submodules/Eflatun.Expansions/Eflatun.Expansions*
-
-* Eflatun.UnityCommon   
-points to *submodules/Eflatun.UnityCommon/Assets/Eflatun.UnityCommon*
-
-* JohannesMP.SceneReference   
-points to *submodules/JohannesMP.SceneReference*
-
-They might be broken due to the way git handles NTFS symlinks. If they are, simply remove the dummy files in place of the symlinks and recreate NTFS symlinks.
+Assets/Plugins contains a symlink `Eflatun.UnityCommon` that points to *submodules/Eflatun.UnityCommon/Assets/Eflatun.UnityCommon*. It might get broken after a repo clone due to the way git handles NTFS symlinks. If it is broken, simply remove the dummy file in place of the symlink and recreate the NTFS symlinks.
 
 ## 3rd Party
 
@@ -32,3 +26,9 @@ They might be broken due to the way git handles NTFS symlinks. If they are, simp
 * [LeanTransition](https://assetstore.unity.com/packages/tools/animation/lean-transition-144107)
 * [NuGet](https://assetstore.unity.com/packages/tools/utilities/nuget-for-unity-104640)
 * [morelinq.3.1.1](https://www.nuget.org/packages/MoreLinq)
+
+# License
+
+MIT License. Refer to the [LICENSE](LICENSE) file.
+
+Copyright (c) 2019 [S. Tarık Çetin](https://github.com/starikcetin)
